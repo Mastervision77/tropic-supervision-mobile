@@ -1,53 +1,56 @@
-/**
- * Below are the colors that are used in the app. The colors are defined in the light and dark mode.
- * There are many other ways to style your app. For example, [Nativewind](https://www.nativewind.dev/), [Tamagui](https://tamagui.dev/), [unistyles](https://reactnativeunistyles.vercel.app), etc.
- */
+
 
 import { Platform } from 'react-native';
+import { Cairo_700Bold } from '@expo-google-fonts/cairo';
 
-const tintColorLight = '#0a7ea4';
-const tintColorDark = '#fff';
+const tintColorLight = '#500d75';
+const tintColorDark = '#500d75';
 
 export const Colors = {
   light: {
+    primary: '#500d75',
+    secondary: '#fe6813',
     text: '#11181C',
-    background: '#fff',
+    background: '#FFFFFF',
     tint: tintColorLight,
-    icon: '#687076',
-    tabIconDefault: '#687076',
+    icon: '#500d75',
+    tabIconDefault: '#ccc',
     tabIconSelected: tintColorLight,
   },
   dark: {
+    primary: '#500d75',
+    secondary: '#fe6813',
     text: '#ECEDEE',
-    background: '#151718',
+    background: '#FFFFFF',
     tint: tintColorDark,
-    icon: '#9BA1A6',
-    tabIconDefault: '#9BA1A6',
+    icon: '#500d75',
+    tabIconDefault: '#ccc',
     tabIconSelected: tintColorDark,
   },
 };
 
-export const Fonts = Platform.select({
-  ios: {
-    /** iOS `UIFontDescriptorSystemDesignDefault` */
-    sans: 'system-ui',
-    /** iOS `UIFontDescriptorSystemDesignSerif` */
-    serif: 'ui-serif',
-    /** iOS `UIFontDescriptorSystemDesignRounded` */
-    rounded: 'ui-rounded',
-    /** iOS `UIFontDescriptorSystemDesignMonospaced` */
-    mono: 'ui-monospace',
-  },
-  default: {
-    sans: 'normal',
-    serif: 'serif',
-    rounded: 'normal',
-    mono: 'monospace',
-  },
-  web: {
-    sans: "system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif",
-    serif: "Georgia, 'Times New Roman', serif",
-    rounded: "'SF Pro Rounded', 'Hiragino Maru Gothic ProN', Meiryo, 'MS PGothic', sans-serif",
-    mono: "SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono', 'Courier New', monospace",
-  },
-});
+export const Fonts = {
+  ...Platform.select({
+    ios: {
+      sans: 'system-ui',
+      serif: 'ui-serif',
+      rounded: 'ui-rounded',
+      mono: 'ui-monospace',
+      cairo: 'Cairo_700Bold', // أضفنا الخط هنا
+    },
+    default: {
+      sans: 'normal',
+      serif: 'serif',
+      rounded: 'normal',
+      mono: 'monospace',
+      cairo: 'Cairo_700Bold',
+    },
+    web: {
+      sans: "system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif",
+      serif: "Georgia, 'Times New Roman', serif",
+      rounded: "'SF Pro Rounded', 'Hiragino Maru Gothic ProN', Meiryo, 'MS PGothic', sans-serif",
+      mono: "SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono', 'Courier New', monospace",
+      cairo: 'Cairo_700Bold',
+    },
+  }),
+};
