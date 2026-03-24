@@ -112,9 +112,7 @@ const LoginStyles = StyleSheet.create({
   },
   buttonText: {
     color: "#fff",
-    fontSize: 16,
     fontFamily: APP_FONT_FAMILY,
-    // fontWeight: Platform.OS === "ios" ? "600" : "bold",
   },
   footer: {
     marginTop: 30,

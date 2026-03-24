@@ -9,6 +9,7 @@ import {
   Text,
   View,
   Alert,
+  ActivityIndicator,
 } from 'react-native';
 import * as SecureStore from "expo-secure-store";
 
@@ -48,7 +49,7 @@ export default function LoginScreen() {
           await setAuthData(tokenStr, tenantIdStr, tenantDatabaseStr, user);
 
           await SecureStore.setItemAsync("token", tokenStr);
-          router.replace("/");
+          router.replace("/(tabs)");
         } catch (error) {
           Alert.alert("خطأ", "حدث خطأ أثناء حفظ بيانات الجلسة");
         }
@@ -143,7 +144,6 @@ export default function LoginScreen() {
   };
 
   const isLoading = loadingTenant || loadingLogin;
-  const placeholderColor = "#9ca3af";
 
   return (
     <SafeAreaView style={styles.container}>
@@ -167,19 +167,7 @@ export default function LoginScreen() {
             <Text style={styles.welcomeText}>مرحبا في أذكى</Text>
             <Text style={styles.title}>تسجيل الدخول في لوحة التحكم</Text>
 
-            {/* Name Input */}
-            <View style={styles.inputContainer}>
-              <Text style={styles.inputLabel}>كلمة المرور</Text>
-               <TextInput
-                  placeholderTextColor="#9ca3af"
-                  value={password}
-                  onChangeText={setPassword}
-                  style={styles.passwordInput}
-                  secureTextEntry={!showPassword}
-                  textContentType="password"
-                  editable={!isLoading}
-                />
-            </View>
+
 
             <View style={styles.inputContainer}>
               <Text style={styles.inputLabel}>البريد الإلكتروني</Text>
@@ -195,9 +183,31 @@ export default function LoginScreen() {
               />
             </View>
 
-            {/* Login Button */}
-            <TouchableOpacity style={styles.button} onPress={handleSubmit}>
-              <Text style={styles.buttonText}>تسجيل الدخول</Text>
+            <View style={styles.inputContainer}>
+              <Text style={styles.inputLabel}>كلمة المرور</Text>
+
+              <TextInput
+                placeholderTextColor="#9ca3af"
+                value={password}
+                onChangeText={setPassword}
+                style={styles.input}
+                keyboardType="email-address"
+                autoCapitalize="none"
+                textContentType="emailAddress"
+                editable={!isLoading}
+              />
+            </View>
+
+            <TouchableOpacity
+              style={[styles.button, isLoading && { opacity: 0.7 }]}
+              onPress={handleSubmit}
+              disabled={isLoading}
+            >
+              {isLoading ? (
+                <ActivityIndicator color="#fff" />
+              ) : (
+                <Text style={styles.buttonText}>تسجيل الدخول</Text>
+              )}
             </TouchableOpacity>
           </View>
         </ScrollView>

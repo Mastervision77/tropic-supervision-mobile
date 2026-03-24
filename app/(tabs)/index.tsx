@@ -1,98 +1,174 @@
-import { Image } from 'expo-image';
-import { Platform, StyleSheet } from 'react-native';
-
-import { HelloWave } from '@/components/hello-wave';
-import ParallaxScrollView from '@/components/parallax-scroll-view';
-import { ThemedText } from '@/components/themed-text';
-import { ThemedView } from '@/components/themed-view';
-import { Link } from 'expo-router';
+import React, { useEffect, useRef } from 'react';
+import { StyleSheet, Animated, View, Text, ActivityIndicator } from 'react-native';
+import { useAuth } from '@/hooks/useAuth';
+import { Colors } from '@/constants/theme';
+import { useColorScheme } from '@/hooks/use-color-scheme';
+import APP_FONT_FAMILY from '@/components/styles/font';
+import useFetch from '@/hooks/useFetch';
 
 export default function HomeScreen() {
-  return (
-    <ParallaxScrollView
-      headerBackgroundColor={{ light: '#A1CEDC', dark: '#1D3D47' }}
-      headerImage={
-        <Image
-          source={require('@/assets/images/partial-react-logo.png')}
-          style={styles.reactLogo}
-        />
-      }>
-      <ThemedView style={styles.titleContainer}>
-        <ThemedText type="title">Welcome!</ThemedText>
-        <HelloWave />
-      </ThemedView>
-      <ThemedView style={styles.stepContainer}>
-        <ThemedText type="subtitle">Step 1: Try it</ThemedText>
-        <ThemedText>
-          Edit <ThemedText type="defaultSemiBold">app/(tabs)/index.tsx</ThemedText> to see changes.
-          Press{' '}
-          <ThemedText type="defaultSemiBold">
-            {Platform.select({
-              ios: 'cmd + d',
-              android: 'cmd + m',
-              web: 'F12',
-            })}
-          </ThemedText>{' '}
-          to open developer tools.
-        </ThemedText>
-      </ThemedView>
-      <ThemedView style={styles.stepContainer}>
-        <Link href="/modal">
-          <Link.Trigger>
-            <ThemedText type="subtitle">Step 2: Explore</ThemedText>
-          </Link.Trigger>
-          <Link.Preview />
-          <Link.Menu>
-            <Link.MenuAction title="Action" icon="cube" onPress={() => alert('Action pressed')} />
-            <Link.MenuAction
-              title="Share"
-              icon="square.and.arrow.up"
-              onPress={() => alert('Share pressed')}
-            />
-            <Link.Menu title="More" icon="ellipsis">
-              <Link.MenuAction
-                title="Delete"
-                icon="trash"
-                destructive
-                onPress={() => alert('Delete pressed')}
-              />
-            </Link.Menu>
-          </Link.Menu>
-        </Link>
+  const { user } = useAuth();
+  const colorScheme = useColorScheme();
+  const colors = Colors[colorScheme ?? 'dark'];
 
-        <ThemedText>
-          {`Tap the Explore tab to learn more about what's included in this starter app.`}
-        </ThemedText>
-      </ThemedView>
-      <ThemedView style={styles.stepContainer}>
-        <ThemedText type="subtitle">Step 3: Get a fresh start</ThemedText>
-        <ThemedText>
-          {`When you're ready, run `}
-          <ThemedText type="defaultSemiBold">npm run reset-project</ThemedText> to get a fresh{' '}
-          <ThemedText type="defaultSemiBold">app</ThemedText> directory. This will move the current{' '}
-          <ThemedText type="defaultSemiBold">app</ThemedText> to{' '}
-          <ThemedText type="defaultSemiBold">app-example</ThemedText>.
-        </ThemedText>
-      </ThemedView>
-    </ParallaxScrollView>
+  const employeeId = (user as any)?.employee?.id;
+
+  const { data, isLoading, error, refetch } = useFetch({
+    queryKey: ['employee-wallets'],
+    endpoint: `master-data/employee-wallets?employee_id=${employeeId}`,
+    enabled: !!employeeId,
+  });
+
+  const wallet = (data as any)?.data?.data?.[0];
+
+  return (
+    <View style={[styles.container, { backgroundColor: colors.background }]}>
+      <View style={styles.header}>
+        <Text style={[styles.greeting]}>
+          مرحباً بك
+        </Text>
+        <Text style={[styles.name, { color: colors.primary }]}>
+          {user?.name || 'ضيف'}
+        </Text>
+      </View>
+
+      <View style={styles.content}>
+        {isLoading ? (
+          <ActivityIndicator size="large" color={colors.secondary} style={styles.loader} />
+        ) : wallet ? (
+          <View style={[styles.walletCard, { backgroundColor: colors.primary }]}>
+            <View style={styles.walletCardInner}>
+              <Text style={styles.walletTitle}>رصيد المحفظة</Text>
+              
+              <View style={styles.amountContainer}>
+                <Text style={styles.walletAmount}>
+                  {Number(wallet.amount).toLocaleString('en-US')}
+                </Text>
+              </View>
+
+              <View style={styles.divider} />
+
+              <View style={styles.walletFooter}>
+                <Text style={styles.walletOwnerLabel}>صاحب المحفظة</Text>
+                <Text style={[styles.walletOwner, { color: colors.secondary }]}>{wallet.employee_name}</Text>
+              </View>
+            </View>
+          </View>
+        ) : (
+          <View style={[styles.noDataCard, { backgroundColor: colors.background, borderColor: colors.primary }]}>
+            <Text style={[styles.noDataText, { color: colors.text }]}>
+              لا توجد بيانات للمحفظة حالياً
+            </Text>
+          </View>
+        )}
+      </View>
+    </View>
   );
 }
 
 const styles = StyleSheet.create({
-  titleContainer: {
-    flexDirection: 'row',
+  container: {
+    flex: 1,
+  },
+  header: {
+    paddingHorizontal: 20,
+    paddingTop: 60,
+    paddingBottom: 20,
+    alignItems: 'flex-start',
+  },
+  content: {
+    flex: 1,
+    paddingHorizontal: 20,
     alignItems: 'center',
-    gap: 8,
+    paddingTop: 20,
   },
-  stepContainer: {
-    gap: 8,
-    marginBottom: 8,
+  loader: {
+    marginTop: 40,
   },
-  reactLogo: {
-    height: 178,
-    width: 290,
-    bottom: 0,
-    left: 0,
-    position: 'absolute',
+  greeting: {
+    fontFamily: APP_FONT_FAMILY,
+    fontSize: 20,
+    marginBottom: 5,
+    opacity: 0.8,
+    textAlign:'center',
+    width:'100%'
+  },
+  name: {
+    fontFamily: APP_FONT_FAMILY,
+    fontSize: 28,
+    textAlign:'center',
+    width:'100%'
+  },
+  walletCard: {
+    width: '100%',
+    borderRadius: 24,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 8 },
+    shadowOpacity: 0.15,
+    shadowRadius: 12,
+    elevation: 8,
+    overflow: 'hidden',
+  },
+  walletCardInner: {
+    padding: 24,
+    alignItems: 'flex-end',
+    width: '100%',
+  },
+  walletTitle: {
+    fontFamily: APP_FONT_FAMILY,
+    fontSize: 16,
+    color: '#FFE8DF',
+    marginBottom: 15,
+  },
+  amountContainer: {
+    flexDirection: 'row',
+    alignItems: 'baseline',
+  },
+  walletAmount: {
+    fontFamily: APP_FONT_FAMILY,
+    fontSize: 42,
+    color: '#FFF',
+    includeFontPadding: false,
+  },
+  currency: {
+    fontFamily: APP_FONT_FAMILY,
+    fontSize: 18,
+    color: '#FFF',
+    marginLeft: 8,
+    opacity: 0.9,
+  },
+  divider: {
+    height: 1,
+    backgroundColor: '#FFFFFF',
+    opacity: 0.2,
+    width: '100%',
+    marginVertical: 20,
+  },
+  walletFooter: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    width: '100%',
+  },
+  walletOwnerLabel: {
+    fontFamily: APP_FONT_FAMILY,
+    fontSize: 13,
+    color: '#FFE8DF',
+  },
+  walletOwner: {
+    fontFamily: APP_FONT_FAMILY,
+    fontSize: 15,
+  },
+  noDataCard: {
+    width: '100%',
+    padding: 30,
+    borderRadius: 20,
+    borderWidth: 1,
+    borderStyle: 'dashed',
+    alignItems: 'center',
+  },
+  noDataText: {
+    fontFamily: APP_FONT_FAMILY,
+    fontSize: 16,
   },
 });
