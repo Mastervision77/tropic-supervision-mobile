@@ -49,8 +49,8 @@ export default function HomeScreen() {
               <View style={styles.divider} />
 
               <View style={styles.walletFooter}>
-                <Text style={styles.walletOwnerLabel}>صاحب المحفظة</Text>
                 <Text style={[styles.walletOwner, { color: colors.secondary }]}>{wallet.employee_name}</Text>
+                 <Text style={styles.walletOwnerLabel}>صاحب المحفظة</Text>
               </View>
             </View>
           </View>
