@@ -8,13 +8,20 @@ interface Props {
   comment: Comment;
 }
 
-const CommentItem = React.memo(({ comment }: Props) => (
-  <View style={styles.container}>
-    <ThemedText style={[styles.body, { color: '#000' }]}>
-      {comment.comment}
-    </ThemedText>
-  </View>
-));
+const CommentItem = React.memo(({ comment }: Props) => {
+  const text =
+    typeof comment?.comment === 'string'
+      ? comment.comment
+      : JSON.stringify(comment?.comment ?? '');
+
+  return (
+    <View style={styles.container}>
+      <ThemedText style={[styles.body, { color: '#000' }]}>
+        {text}
+      </ThemedText>
+    </View>
+  );
+});
 
 export default CommentItem;
 

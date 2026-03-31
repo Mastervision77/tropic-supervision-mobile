@@ -14,6 +14,12 @@ export interface Task {
   id: number;
   name: string;
   description: string;
+  can_checkin: number;
+  is_checked_in: number;
+  checkin_time: string;
+  latitude: string;
+  longitude: string;
+  created_at: string;
   comments: Comment[];
 }
 

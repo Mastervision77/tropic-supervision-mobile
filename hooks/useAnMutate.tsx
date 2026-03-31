@@ -13,7 +13,9 @@ type useAnMutateProps<T> = {
   method?: "post" | "put" | "delete";
 };
 
-const API_BASE_URL = "https://super-admin.azzka.app/public/api";
+// const API_BASE_URL = "https://super-admin.azzka.app/public/api";
+const API_BASE_URL = process.env.EXPO_PUBLIC_API_BASE_URL_SUPER;
+
 
 export function useAnMutate<T>({
   endpoint,

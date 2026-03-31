@@ -15,8 +15,7 @@ type UseFetchProps = {
   localization?: boolean;
 };
 
-const API_BASE_URL = "https://azzka.app/back/public/api/v1";
-
+const API_BASE_URL = process.env.EXPO_PUBLIC_API_BASE_URL;
 function useFetch<T>({
   endpoint,
   enabled = true,
