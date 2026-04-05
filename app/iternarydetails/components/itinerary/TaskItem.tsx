@@ -1,3 +1,4 @@
+
 // import React, { useCallback, useState, useRef } from 'react';
 // import {
 //   View,
@@ -10,7 +11,6 @@
 //   ActivityIndicator,
 //   I18nManager,
 //   Alert,
-//   KeyboardAvoidingView,
 //   ScrollView,
 // } from 'react-native';
 // import { ThemedText } from '@/components/themed-text';
@@ -52,9 +52,7 @@
 //   <ThemedText style={[styles.actionIcon, disabled && { opacity: 0.35 }]}>📍</ThemedText>
 // );
 
-// const SendIcon = () => (
-//   <ThemedText style={styles.sendIcon}>➤</ThemedText>
-// );
+// const SendIcon = () => <ThemedText style={styles.sendIcon}>➤</ThemedText>;
 
 // const MapIcon = () => (
 //   <MaterialCommunityIcons name="map-marker-radius-outline" size={22} color="#333" />
@@ -106,10 +104,7 @@
 //       </TouchableOpacity>
 
 //       <TextInput
-//         style={[
-//           styles.commentInput,
-//           { borderColor: theme.primary + '40' },
-//         ]}
+//         style={[styles.commentInput, { borderColor: theme.primary + '40' }]}
 //         placeholder="أضف تعليقاً…"
 //         placeholderTextColor="#aaa"
 //         value={text}
@@ -174,6 +169,10 @@
 //   );
 // });
 
+// // ─────────────────────────────────────────────
+// // TaskItem - بدون KeyboardAvoidingView
+// // الـ keyboard handling بيتم على مستوى الشاشة في TasksScreen
+// // ─────────────────────────────────────────────
 // const TaskItem = React.memo(({ task, theme }: Props) => {
 //   const { user } = useAuth() as any;
 //   const employeeId = (user as any)?.employee?.id;
@@ -207,97 +206,91 @@
 //   }, [canCheckin, checkinLoading, doCheckin, employeeId, task]);
 
 //   return (
-//     <KeyboardAvoidingView
-//       behavior={Platform.OS === 'ios' ? 'padding' : undefined}
-//       keyboardVerticalOffset={Platform.OS === 'ios' ? 90 : 0}
-//     >
-//       <View style={[styles.card, { backgroundColor: '#fff', borderColor: '#e4e6ea' }]}>
-//         <View style={styles.postHeader}>
-//           <View style={styles.postMeta}>
-//             <ThemedText style={[styles.taskName, { color: theme.primary }]}>
-//               {task.name}
-//             </ThemedText>
-//             <ThemedText style={styles.taskDate}>
-//               {formatDate(task.created_at)}
+//     <View style={[styles.card, { backgroundColor: '#fff', borderColor: '#e4e6ea' }]}>
+//       {/* ── Header ── */}
+//       <View style={styles.postHeader}>
+//         <View style={styles.postMeta}>
+//           <ThemedText style={[styles.taskName, { color: theme.primary }]}>
+//             {task.name}
+//           </ThemedText>
+//           <ThemedText style={styles.taskDate}>{formatDate(task.created_at)}</ThemedText>
+//         </View>
+//       </View>
+
+//       {/* ── Description ── */}
+//       {task.description ? (
+//         <ThemedText style={styles.taskDescription}>{task.description}</ThemedText>
+//       ) : null}
+
+//       {/* ── عدد التعليقات ── */}
+//       {commentCount > 0 && (
+//         <TouchableOpacity onPress={toggleComments} activeOpacity={0.7}>
+//           <View style={styles.statsRow}>
+//             <ThemedText style={styles.statsText}>
+//               💬 {commentCount} {commentCount === 1 ? 'تعليق' : 'تعليقات'}
 //             </ThemedText>
 //           </View>
-//         </View>
+//         </TouchableOpacity>
+//       )}
 
-//         {/* ── Post Body ── */}
-//         {task.description ? (
-//           <ThemedText style={styles.taskDescription}>{task.description}</ThemedText>
-//         ) : null}
+//       <View style={styles.divider} />
 
-//         {commentCount > 0 && (
-//           <TouchableOpacity onPress={toggleComments} activeOpacity={0.7}>
-//             <View style={styles.statsRow}>
-//               <ThemedText style={styles.statsText}>
-//                 💬 {commentCount} {commentCount === 1 ? 'تعليق' : 'تعليقات'}
-//               </ThemedText>
-//             </View>
-//           </TouchableOpacity>
-//         )}
-
-//         <View style={styles.divider} />
-
-//         <View style={styles.actionsRow}>
-//           <TouchableOpacity
-//             style={[styles.actionBtn, commentsOpen && { backgroundColor: theme.primary + '12' }]}
-//             onPress={toggleComments}
-//             activeOpacity={0.7}
+//       {/* ── Actions ── */}
+//       <View style={styles.actionsRow}>
+//         <TouchableOpacity
+//           style={[styles.actionBtn, commentsOpen && { backgroundColor: theme.primary + '12' }]}
+//           onPress={toggleComments}
+//           activeOpacity={0.7}
+//         >
+//           <CommentIcon />
+//           <ThemedText
+//             style={[styles.actionLabel, { color: commentsOpen ? theme.primary : '#606770' }]}
 //           >
-//             <CommentIcon />
-//             <ThemedText style={[styles.actionLabel, { color: commentsOpen ? theme.primary : '#606770' }]}>
-//               تعليق
-//             </ThemedText>
-//           </TouchableOpacity>
+//             تعليق
+//           </ThemedText>
+//         </TouchableOpacity>
 
-//           <TouchableOpacity
-//             style={[styles.actionBtn, !canCheckin && styles.actionBtnDisabled]}
-//             onPress={handleCheckin}
-//             activeOpacity={canCheckin ? 0.7 : 1}
-//             disabled={!canCheckin || checkinLoading}
-//           >
-//             {checkinLoading ? (
-//               <ActivityIndicator size="small" color={theme.primary} />
-//             ) : (
-//               <CheckinIcon disabled={!canCheckin} />
-//             )}
-//             <ThemedText style={[styles.actionLabel, { color: canCheckin ? '#606770' : '#bbb' }]}>
-//               تسجيل
-//             </ThemedText>
-//           </TouchableOpacity>
+//         <TouchableOpacity
+//           style={[styles.actionBtn, !canCheckin && styles.actionBtnDisabled]}
+//           onPress={handleCheckin}
+//           activeOpacity={canCheckin ? 0.7 : 1}
+//           disabled={!canCheckin || checkinLoading}
+//         >
+//           {checkinLoading ? (
+//             <ActivityIndicator size="small" color={theme.primary} />
+//           ) : (
+//             <CheckinIcon disabled={!canCheckin} />
+//           )}
+//           <ThemedText style={[styles.actionLabel, { color: canCheckin ? '#606770' : '#bbb' }]}>
+//             تسجيل
+//           </ThemedText>
+//         </TouchableOpacity>
 
-//           <TouchableOpacity
-//             style={styles.actionBtn}
-//             onPress={() => setMapVisible(true)}
-//             activeOpacity={0.7}
-//           >
-//             <MapIcon />
-//             <ThemedText style={[styles.actionLabel, { color: '#606770' }]}>
-//               الموقع
-//             </ThemedText>
-//           </TouchableOpacity>
-//         </View>
-
-//         <TaskMapModal
-//           visible={mapVisible}
-//           onClose={() => setMapVisible(false)}
-//           taskLatitude={task.latitude}
-//           taskLongitude={task.longitude}
-//           taskName={task.name}
-//           theme={theme}
-//         />
-
-//         {commentsOpen && (
-//           <CommentsSection
-//             task={task}
-//             theme={theme}
-//             employeeId={employeeId}
-//           />
-//         )}
+//         <TouchableOpacity
+//           style={styles.actionBtn}
+//           onPress={() => setMapVisible(true)}
+//           activeOpacity={0.7}
+//         >
+//           <MapIcon />
+//           <ThemedText style={[styles.actionLabel, { color: '#606770' }]}>الموقع</ThemedText>
+//         </TouchableOpacity>
 //       </View>
-//     </KeyboardAvoidingView>
+
+//       {/* ── Map Modal ── */}
+//       <TaskMapModal
+//         visible={mapVisible}
+//         onClose={() => setMapVisible(false)}
+//         taskLatitude={task.latitude}
+//         taskLongitude={task.longitude}
+//         taskName={task.name}
+//         theme={theme}
+//       />
+
+//       {/* ── Comments ── */}
+//       {commentsOpen && (
+//         <CommentsSection task={task} theme={theme} employeeId={employeeId} />
+//       )}
+//     </View>
 //   );
 // });
 
@@ -321,19 +314,6 @@
 //     paddingHorizontal: 12,
 //     paddingTop: 12,
 //     paddingBottom: 8,
-//   },
-//   avatar: {
-//     width: 40,
-//     height: 40,
-//     borderRadius: 20,
-//     alignItems: 'center',
-//     justifyContent: 'center',
-//     marginLeft: 10,
-//   },
-//   avatarText: {
-//     fontSize: 18,
-//     fontFamily: APP_FONT_FAMILY,
-//     fontWeight: '700',
 //   },
 //   postMeta: {
 //     flex: 1,
@@ -399,9 +379,6 @@
 //     fontSize: 13,
 //     fontWeight: '600',
 //   },
-//   keyboardAvoidingView: {
-//     flex: 1,
-//   },
 //   commentsWrapper: {
 //     borderTopWidth: 1,
 //     paddingTop: 8,
@@ -440,7 +417,7 @@
 //     backgroundColor: '#f0f2f5',
 //     textAlign: 'right',
 //     maxHeight: 100,
-//     color: '#222', // اللون الأسود الثابت للنص
+//     color: '#222',
 //   },
 //   sendBtn: {
 //     width: 36,
@@ -459,6 +436,7 @@
 import React, { useCallback, useState, useRef } from 'react';
 import {
   View,
+  Text,
   StyleSheet,
   TouchableOpacity,
   LayoutAnimation,
@@ -470,18 +448,20 @@ import {
   Alert,
   ScrollView,
 } from 'react-native';
-import { ThemedText } from '@/components/themed-text';
 import APP_FONT_FAMILY from '@/components/styles/font';
 import CommentItem from './CommentItem';
 import { Task } from './types';
 import { useAuth } from '@/hooks/useAuth';
 import { useMutate } from '@/hooks/useMutate';
-import { MaterialCommunityIcons } from '@expo/vector-icons';
+import { Ionicons, MaterialCommunityIcons } from '@expo/vector-icons';
 import TaskMapModal from './Taskmapmodal';
 
 if (Platform.OS === 'android') {
   UIManager.setLayoutAnimationEnabledExperimental?.(true);
 }
+
+const PRIMARY = '#500d75';
+const ICON_BG = '#f0e8f5';
 
 interface Props {
   task: Task;
@@ -503,18 +483,7 @@ function formatDate(dateStr: string): string {
   }
 }
 
-const CommentIcon = () => <ThemedText style={styles.actionIcon}>💬</ThemedText>;
-
-const CheckinIcon = ({ disabled }: { disabled: boolean }) => (
-  <ThemedText style={[styles.actionIcon, disabled && { opacity: 0.35 }]}>📍</ThemedText>
-);
-
-const SendIcon = () => <ThemedText style={styles.sendIcon}>➤</ThemedText>;
-
-const MapIcon = () => (
-  <MaterialCommunityIcons name="map-marker-radius-outline" size={22} color="#333" />
-);
-
+// ── AddComment ────────────────────────────────────────────────────────────────
 interface AddCommentProps {
   taskId: number;
   employeeId: number | string;
@@ -522,7 +491,7 @@ interface AddCommentProps {
   theme: any;
 }
 
-const AddComment = React.memo(({ taskId, employeeId, onCommentAdded, theme }: AddCommentProps) => {
+const AddComment = React.memo(({ taskId, employeeId, onCommentAdded }: AddCommentProps) => {
   const [text, setText] = useState('');
 
   const { mutate: postComment, isPending } = useMutate<any>({
@@ -542,28 +511,29 @@ const AddComment = React.memo(({ taskId, employeeId, onCommentAdded, theme }: Ad
   }, [text, isPending, employeeId, postComment]);
 
   return (
-    <View style={[styles.addCommentRow, { borderTopColor: theme.primary + '20' }]}>
+    <View style={styles.addCommentRow}>
       <TouchableOpacity
         onPress={submit}
         disabled={isPending || !text.trim()}
-        style={[
-          styles.sendBtn,
-          { backgroundColor: theme.primary },
-          (isPending || !text.trim()) && { opacity: 0.5 },
-        ]}
+        style={[styles.sendBtn, (isPending || !text.trim()) && { opacity: 0.45 }]}
         activeOpacity={0.8}
       >
         {isPending ? (
           <ActivityIndicator size="small" color="#fff" />
         ) : (
-          <SendIcon />
+          <Ionicons
+            name="send"
+            size={15}
+            color="#fff"
+            style={{ transform: [{ scaleX: I18nManager.isRTL ? 1 : -1 }] }}
+          />
         )}
       </TouchableOpacity>
 
       <TextInput
-        style={[styles.commentInput, { borderColor: theme.primary + '40' }]}
+        style={styles.commentInput}
         placeholder="أضف تعليقاً…"
-        placeholderTextColor="#aaa"
+        placeholderTextColor="#bbb"
         value={text}
         onChangeText={setText}
         multiline
@@ -575,6 +545,7 @@ const AddComment = React.memo(({ taskId, employeeId, onCommentAdded, theme }: Ad
   );
 });
 
+// ── CommentsSection ────────────────────────────────────────────────────────────
 interface CommentsSectionProps {
   task: Task;
   theme: any;
@@ -587,18 +558,13 @@ const CommentsSection = React.memo(({ task, theme, employeeId }: CommentsSection
 
   const handleNewComment = useCallback((newComment: any) => {
     if (!newComment || typeof newComment !== 'object' || Array.isArray(newComment)) return;
-    const normalized = {
-      ...newComment,
-      id: newComment.id ?? `temp-${Date.now()}`,
-    };
+    const normalized = { ...newComment, id: newComment.id ?? `temp-${Date.now()}` };
     setComments((prev) => [...prev, normalized]);
-    setTimeout(() => {
-      scrollViewRef.current?.scrollToEnd({ animated: true });
-    }, 100);
+    setTimeout(() => scrollViewRef.current?.scrollToEnd({ animated: true }), 100);
   }, []);
 
   return (
-    <View style={[styles.commentsWrapper, { borderTopColor: theme.primary + '15' }]}>
+    <View style={styles.commentsWrapper}>
       <ScrollView
         ref={scrollViewRef}
         style={styles.commentsScrollView}
@@ -612,7 +578,7 @@ const CommentsSection = React.memo(({ task, theme, employeeId }: CommentsSection
             ))}
           </View>
         ) : (
-          <ThemedText style={styles.noComments}>لا توجد تعليقات بعد</ThemedText>
+          <Text style={styles.noComments}>لا توجد تعليقات بعد</Text>
         )}
       </ScrollView>
 
@@ -626,10 +592,7 @@ const CommentsSection = React.memo(({ task, theme, employeeId }: CommentsSection
   );
 });
 
-// ─────────────────────────────────────────────
-// TaskItem - بدون KeyboardAvoidingView
-// الـ keyboard handling بيتم على مستوى الشاشة في TasksScreen
-// ─────────────────────────────────────────────
+// ── TaskItem ───────────────────────────────────────────────────────────────────
 const TaskItem = React.memo(({ task, theme }: Props) => {
   const { user } = useAuth() as any;
   const employeeId = (user as any)?.employee?.id;
@@ -655,58 +618,54 @@ const TaskItem = React.memo(({ task, theme }: Props) => {
 
   const handleCheckin = useCallback(() => {
     if (!canCheckin || checkinLoading) return;
-    doCheckin({
-      employee_id: employeeId,
-      latitude: task.latitude,
-      longitude: task.longitude,
-    });
+    doCheckin({ employee_id: employeeId, latitude: task.latitude, longitude: task.longitude });
   }, [canCheckin, checkinLoading, doCheckin, employeeId, task]);
 
   return (
-    <View style={[styles.card, { backgroundColor: '#fff', borderColor: '#e4e6ea' }]}>
+    <View style={styles.card}>
       {/* ── Header ── */}
-      <View style={styles.postHeader}>
-        <View style={styles.postMeta}>
-          <ThemedText style={[styles.taskName, { color: theme.primary }]}>
-            {task.name}
-          </ThemedText>
-          <ThemedText style={styles.taskDate}>{formatDate(task.created_at)}</ThemedText>
+      <View style={styles.cardHeader}>
+        <View style={styles.taskMeta}>
+          <Text style={styles.taskName}>{task.name}</Text>
+          <Text style={styles.taskDate}>{formatDate(task.created_at)}</Text>
         </View>
       </View>
 
       {/* ── Description ── */}
       {task.description ? (
-        <ThemedText style={styles.taskDescription}>{task.description}</ThemedText>
+        <Text style={styles.taskDescription}>{task.description}</Text>
       ) : null}
 
-      {/* ── عدد التعليقات ── */}
+      {/* ── Comment count ── */}
       {commentCount > 0 && (
-        <TouchableOpacity onPress={toggleComments} activeOpacity={0.7}>
-          <View style={styles.statsRow}>
-            <ThemedText style={styles.statsText}>
-              💬 {commentCount} {commentCount === 1 ? 'تعليق' : 'تعليقات'}
-            </ThemedText>
-          </View>
+        <TouchableOpacity onPress={toggleComments} activeOpacity={0.7} style={styles.statsRow}>
+          <Ionicons name="chatbubble-outline" size={13} color="#aaa" />
+          <Text style={styles.statsText}>
+            {commentCount} {commentCount === 1 ? 'تعليق' : 'تعليقات'}
+          </Text>
         </TouchableOpacity>
       )}
 
+      {/* ── Divider ── */}
       <View style={styles.divider} />
 
       {/* ── Actions ── */}
       <View style={styles.actionsRow}>
+        {/* Comment */}
         <TouchableOpacity
-          style={[styles.actionBtn, commentsOpen && { backgroundColor: theme.primary + '12' }]}
+          style={[styles.actionBtn, commentsOpen && styles.actionBtnActive]}
           onPress={toggleComments}
           activeOpacity={0.7}
         >
-          <CommentIcon />
-          <ThemedText
-            style={[styles.actionLabel, { color: commentsOpen ? theme.primary : '#606770' }]}
-          >
-            تعليق
-          </ThemedText>
+          <Ionicons
+            name={commentsOpen ? 'chatbubble' : 'chatbubble-outline'}
+            size={17}
+            color={commentsOpen ? PRIMARY : '#888'}
+          />
+          <Text style={[styles.actionLabel, commentsOpen && { color: PRIMARY }]}>تعليق</Text>
         </TouchableOpacity>
 
+        {/* Checkin */}
         <TouchableOpacity
           style={[styles.actionBtn, !canCheckin && styles.actionBtnDisabled]}
           onPress={handleCheckin}
@@ -714,22 +673,25 @@ const TaskItem = React.memo(({ task, theme }: Props) => {
           disabled={!canCheckin || checkinLoading}
         >
           {checkinLoading ? (
-            <ActivityIndicator size="small" color={theme.primary} />
+            <ActivityIndicator size="small" color={PRIMARY} />
           ) : (
-            <CheckinIcon disabled={!canCheckin} />
+            <Ionicons
+              name="location-outline"
+              size={17}
+              color={canCheckin ? '#888' : '#ccc'}
+            />
           )}
-          <ThemedText style={[styles.actionLabel, { color: canCheckin ? '#606770' : '#bbb' }]}>
-            تسجيل
-          </ThemedText>
+          <Text style={[styles.actionLabel, !canCheckin && { color: '#ccc' }]}>تسجيل</Text>
         </TouchableOpacity>
 
+        {/* Map */}
         <TouchableOpacity
           style={styles.actionBtn}
           onPress={() => setMapVisible(true)}
           activeOpacity={0.7}
         >
-          <MapIcon />
-          <ThemedText style={[styles.actionLabel, { color: '#606770' }]}>الموقع</ThemedText>
+          <Ionicons name="map-outline" size={17} color="#888" />
+          <Text style={styles.actionLabel}>الموقع</Text>
         </TouchableOpacity>
       </View>
 
@@ -755,62 +717,79 @@ export default TaskItem;
 
 const styles = StyleSheet.create({
   card: {
-    borderRadius: 10,
-    borderWidth: 1,
+    backgroundColor: '#fff',
+    borderRadius: 12,
+    borderWidth: 0.5,
+    borderColor: 'rgba(80,13,117,0.1)',
     marginBottom: 10,
     overflow: 'hidden',
-    shadowColor: '#000',
+    shadowColor: PRIMARY,
     shadowOffset: { width: 0, height: 1 },
-    shadowOpacity: 0.08,
+    shadowOpacity: 0.05,
     shadowRadius: 4,
     elevation: 2,
   },
-  postHeader: {
+
+  /* Header */
+  cardHeader: {
     flexDirection: 'row-reverse',
     alignItems: 'center',
-    paddingHorizontal: 12,
-    paddingTop: 12,
+    paddingHorizontal: 14,
+    paddingTop: 14,
     paddingBottom: 8,
   },
-  postMeta: {
+  taskMeta: {
     flex: 1,
     alignItems: 'flex-end',
   },
   taskName: {
     fontFamily: APP_FONT_FAMILY,
     fontSize: 15,
+    fontWeight: '500',
+    color: PRIMARY,
     textAlign: 'right',
   },
   taskDate: {
     fontFamily: APP_FONT_FAMILY,
     fontSize: 11,
-    color: '#8a8d91',
+    color: '#aaa',
     textAlign: 'right',
-    marginTop: 2,
+    marginTop: 3,
   },
+
+  /* Description */
   taskDescription: {
     fontFamily: APP_FONT_FAMILY,
-    fontSize: 14,
-    color: '#333',
+    fontSize: 13,
+    color: '#555',
     textAlign: 'right',
-    lineHeight: 21,
-    paddingHorizontal: 12,
+    lineHeight: 20,
+    paddingHorizontal: 14,
     paddingBottom: 10,
   },
+
+  /* Stats */
   statsRow: {
-    paddingHorizontal: 12,
-    paddingBottom: 6,
-    alignItems: 'flex-end',
+    flexDirection: 'row-reverse',
+    alignItems: 'center',
+    gap: 4,
+    paddingHorizontal: 14,
+    paddingBottom: 8,
   },
   statsText: {
     fontFamily: APP_FONT_FAMILY,
     fontSize: 12,
-    color: '#606770',
+    color: '#aaa',
   },
+
+  /* Divider */
   divider: {
-    height: 1,
-    backgroundColor: '#e4e6ea',
+    height: 0.5,
+    backgroundColor: 'rgba(80,13,117,0.1)',
+    marginHorizontal: 14,
   },
+
+  /* Actions */
   actionsRow: {
     flexDirection: 'row-reverse',
     justifyContent: 'space-around',
@@ -821,26 +800,29 @@ const styles = StyleSheet.create({
     flexDirection: 'row-reverse',
     alignItems: 'center',
     justifyContent: 'center',
-    paddingVertical: 8,
-    borderRadius: 4,
-    gap: 6,
+    paddingVertical: 10,
+    gap: 5,
+    borderRadius: 6,
+  },
+  actionBtnActive: {
+    backgroundColor: ICON_BG,
   },
   actionBtnDisabled: {
-    opacity: 0.45,
-  },
-  actionIcon: {
-    fontSize: 16,
+    opacity: 0.4,
   },
   actionLabel: {
     fontFamily: APP_FONT_FAMILY,
     fontSize: 13,
-    fontWeight: '600',
+    color: '#888',
   },
+
+  /* Comments section */
   commentsWrapper: {
-    borderTopWidth: 1,
-    paddingTop: 8,
-    paddingHorizontal: 12,
-    paddingBottom: 4,
+    borderTopWidth: 0.5,
+    borderTopColor: 'rgba(80,13,117,0.1)',
+    paddingHorizontal: 14,
+    paddingTop: 10,
+    paddingBottom: 6,
   },
   commentsScrollView: {
     maxHeight: 200,
@@ -851,27 +833,31 @@ const styles = StyleSheet.create({
   noComments: {
     fontFamily: APP_FONT_FAMILY,
     fontSize: 12,
-    color: '#aaa',
+    color: '#bbb',
     textAlign: 'center',
-    paddingVertical: 8,
+    paddingVertical: 10,
   },
+
+  /* Add comment */
   addCommentRow: {
     flexDirection: 'row-reverse',
     alignItems: 'center',
-    borderTopWidth: 1,
-    paddingTop: 8,
+    borderTopWidth: 0.5,
+    borderTopColor: 'rgba(80,13,117,0.1)',
+    paddingTop: 10,
     gap: 8,
-    marginTop: 4,
+    marginTop: 6,
   },
   commentInput: {
     flex: 1,
     fontFamily: APP_FONT_FAMILY,
     fontSize: 13,
-    borderWidth: 1,
+    borderWidth: 0.5,
+    borderColor: 'rgba(80,13,117,0.2)',
     borderRadius: 20,
     paddingHorizontal: 14,
     paddingVertical: Platform.OS === 'ios' ? 8 : 4,
-    backgroundColor: '#f0f2f5',
+    backgroundColor: '#faf7fc',
     textAlign: 'right',
     maxHeight: 100,
     color: '#222',
@@ -882,10 +868,6 @@ const styles = StyleSheet.create({
     borderRadius: 18,
     alignItems: 'center',
     justifyContent: 'center',
-  },
-  sendIcon: {
-    fontSize: 14,
-    color: '#fff',
-    transform: [{ scaleX: I18nManager.isRTL ? 1 : -1 }],
+    backgroundColor: PRIMARY,
   },
 });
