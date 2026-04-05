@@ -27,14 +27,15 @@ type ResponseData = {
   pagination: { current_page: number; last_page: number; per_page: number; total: number };
 };
 
-/* ─── Sub-components ─────────────────────────────────────── */
 const TransactionItem = ({ item }: { item: Transaction }) => (
   <View style={styles.transactionItem}>
-    <View style={styles.iconContainer}>
-      <Ionicons name="receipt-outline" size={20} color={PRIMARY} />
-    </View>
     <View style={styles.transactionDetails}>
-      <Text style={styles.transactionDescription}>{item.description}</Text>
+      <Text style={styles.transactionDescription}>
+        {item.expenditure_item?.name ?? item.description}
+      </Text>
+      {item.expenditure_item?.name && (
+        <Text style={styles.transactionMeta}>{item.description}</Text>
+      )}
       <Text style={styles.transactionMeta}>
         {item.itinerary?.name}
         {'  ·  '}
@@ -45,11 +46,15 @@ const TransactionItem = ({ item }: { item: Transaction }) => (
         })}
       </Text>
     </View>
+
     <Text style={styles.transactionAmount}>-{item.amount.toLocaleString('en-US')} ر.س</Text>
+
+    <View style={styles.iconContainer}>
+      <Ionicons name="receipt-outline" size={20} color={PRIMARY} />
+    </View>
   </View>
 );
 
-/* ─── Main Screen ────────────────────────────────────────── */
 export default function WalletScreen() {
   const { user } = useAuth();
   const router = useRouter();
@@ -64,8 +69,8 @@ export default function WalletScreen() {
 
   const charges = data?.totals?.charges ?? 0;
   const expenses = data?.totals?.expenses ?? 0;
-  const remaining = charges - expenses;
-  const spentPercent = charges > 0 ? Math.min((expenses / charges) * 100, 100) : 0;
+
+  console.log('data',data);
 
   if (isLoading) {
     return (
@@ -87,11 +92,9 @@ export default function WalletScreen() {
   return (
     <View style={styles.root}>
 
-      {/* ── Header ── */}
       <View style={styles.header}>
         <View style={styles.headerRow}>
 
-          {/* Spend button — يسار */}
           <TouchableOpacity
             style={styles.spendBtn}
             onPress={() => router.push('/spend')}
@@ -101,7 +104,6 @@ export default function WalletScreen() {
             <Text style={styles.spendBtnText}>صرف</Text>
           </TouchableOpacity>
 
-          {/* Texts — يمين */}
           <View style={styles.headerTexts}>
             <Text style={styles.headerGreeting}>مرحباً، {employeeName}</Text>
             <Text style={styles.headerTitle}>محفظتي</Text>
@@ -110,7 +112,6 @@ export default function WalletScreen() {
         </View>
       </View>
 
-      {/* ── Floating summary card ── */}
       <View style={styles.summaryCard}>
         <View style={styles.totalsRow}>
           <View style={styles.totalColumn}>
@@ -129,20 +130,8 @@ export default function WalletScreen() {
             </Text>
           </View>
         </View>
-
-        {/* Progress bar */}
-        <View style={styles.progressSection}>
-          <View style={styles.progressLabels}>
-            <Text style={styles.progressRemaining}>المتبقي: {remaining.toLocaleString('en-US')} ر.س</Text>
-            <Text style={styles.progressPercent}>{Math.round(spentPercent)}٪ مُنفق</Text>
-          </View>
-          <View style={styles.progressTrack}>
-            <View style={[styles.progressFill, { width: `${spentPercent}%` as any }]} />
-          </View>
-        </View>
       </View>
 
-      {/* ── Transactions list ── */}
       <ScrollView
         style={styles.listWrapper}
         contentContainerStyle={styles.listContent}
@@ -172,13 +161,26 @@ const styles = StyleSheet.create({
     backgroundColor: '#f5f3f7',
   },
 
-  /* Header */
   header: {
     backgroundColor: PRIMARY,
     paddingTop: 56,
     paddingBottom: 44,
     paddingHorizontal: 20,
   },
+  expenditureBadge: {
+  marginTop: 5,
+  alignSelf: 'flex-end',
+  backgroundColor: ICON_BG,
+  paddingHorizontal: 8,
+  paddingVertical: 2,
+  borderRadius: 6,
+},
+expenditureBadgeText: {
+  fontSize: 11,
+  color: PRIMARY,
+  fontFamily: APP_FONT_FAMILY,
+  fontWeight: '500',
+},
   headerRow: {
     flexDirection: 'row',
     justifyContent: 'space-between',
@@ -218,7 +220,6 @@ const styles = StyleSheet.create({
     fontFamily: APP_FONT_FAMILY,
   },
 
-  /* Floating summary card */
   summaryCard: {
     marginHorizontal: 16,
     marginTop: -28,
@@ -262,7 +263,6 @@ const styles = StyleSheet.create({
     marginHorizontal: 16,
   },
 
-  /* Progress */
   progressSection: {
     marginTop: 16,
   },
@@ -293,7 +293,6 @@ const styles = StyleSheet.create({
     borderRadius: 99,
   },
 
-  /* Transactions list */
   listWrapper: {
     flex: 1,
     marginTop: 16,
@@ -311,28 +310,33 @@ const styles = StyleSheet.create({
     fontFamily: APP_FONT_FAMILY,
   },
 
-  /* Transaction item */
-  transactionItem: {
-    backgroundColor: '#fff',
-    borderRadius: 12,
-    padding: 14,
-    marginBottom: 10,
-    borderWidth: 0.5,
-    borderColor: 'rgba(0,0,0,0.06)',
-    flexDirection: 'row',
-    alignItems: 'center',
-    direction: 'rtl',
-  },
-  iconContainer: {
-    width: 38,
-    height: 38,
-    borderRadius: 10,
-    backgroundColor: ICON_BG,
-    alignItems: 'center',
-    justifyContent: 'center',
-    marginLeft: 12,
-    flexShrink: 0,
-  },
+transactionItem: {
+  backgroundColor: '#fff',
+  borderRadius: 12,
+  padding: 14,
+  marginBottom: 10,
+  borderWidth: 0.5,
+  borderColor: 'rgba(0,0,0,0.06)',
+  flexDirection: 'row-reverse',  // 👈 عكسنا الاتجاه
+  alignItems: 'center',
+},
+iconContainer: {
+  width: 38,
+  height: 38,
+  borderRadius: 10,
+  backgroundColor: ICON_BG,
+  alignItems: 'center',
+  justifyContent: 'center',
+  marginRight: 12,  // 👈 كان marginLeft
+  flexShrink: 0,
+},
+transactionAmount: {
+  fontSize: 16,
+  fontWeight: '500',
+  color: '#c0392b',
+  marginLeft: 12,  // 👈 كان marginRight
+  fontFamily: APP_FONT_FAMILY,
+},
   transactionDetails: {
     flex: 1,
     alignItems: 'flex-end',
@@ -349,13 +353,6 @@ const styles = StyleSheet.create({
     fontSize: 12,
     color: '#888',
     textAlign: 'right',
-    fontFamily: APP_FONT_FAMILY,
-  },
-  transactionAmount: {
-    fontSize: 16,
-    fontWeight: '500',
-    color: '#c0392b',
-    marginRight: 12,
     fontFamily: APP_FONT_FAMILY,
   },
 

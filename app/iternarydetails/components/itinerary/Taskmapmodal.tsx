@@ -451,12 +451,12 @@ const TaskMapModal = React.memo(({
               rotateEnabled
               pitchEnabled
             >
-              {/* Destination marker */}
-              <Marker coordinate={taskCoords} title={taskName} description="موقع المهمة">
-                <View style={[styles.destMarker, { backgroundColor: theme.primary }]}>
-                  <MaterialCommunityIcons name="flag-checkered" size={18} color="#fff" />
-                </View>
-              </Marker>
+
+              <Marker
+                coordinate={taskCoords}
+                title={taskName}
+                description="موقع المهمة"
+              />
 
               {/* Route polyline — grey (full) */}
               {routeCoords.length > 0 && (
@@ -558,7 +558,7 @@ const TaskMapModal = React.memo(({
 
             {/* Action buttons */}
             <View style={styles.btnRow}>
-              <TouchableOpacity
+              {/* <TouchableOpacity
                 style={[styles.startBtn, { backgroundColor: theme.primary }, (!currentLoc || steps.length === 0) && { opacity: 0.5 }]}
                 onPress={startNavigation}
                 disabled={!currentLoc || steps.length === 0}
@@ -566,7 +566,7 @@ const TaskMapModal = React.memo(({
               >
                 <FontAwesome5 name="route" size={16} color="#fff" />
                 <ThemedText style={styles.startBtnText}>ابدأ الملاحة</ThemedText>
-              </TouchableOpacity>
+              </TouchableOpacity> */}
 
               <TouchableOpacity
                 style={styles.gmapsBtn}
