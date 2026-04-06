@@ -2,6 +2,7 @@ import React, { useCallback } from 'react';
 import { StyleSheet, FlatList, ActivityIndicator, View, Text, TouchableOpacity } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useRouter } from 'expo-router';
+import { Ionicons } from '@expo/vector-icons';
 
 import { ThemedText } from '@/components/themed-text';
 import { ThemedView } from '@/components/themed-view';
@@ -32,16 +33,16 @@ interface ApiResponse {
 const ItineraryCard = React.memo(({
   item,
   onShowTasks,
+  onOpenChat,
 }: {
   item: Itinerary;
   onShowTasks: (id: number) => void;
+  onOpenChat: (id: number) => void;
 }) => (
   <View style={styles.card}>
-    {/* Top accent bar */}
     <View style={styles.cardAccent} />
 
     <View style={styles.cardBody}>
-      {/* Title row + expense badge */}
       <View style={styles.cardHeader}>
         <View style={styles.expenseBadge}>
           <Text style={styles.expenseText}>
@@ -51,12 +52,10 @@ const ItineraryCard = React.memo(({
         <Text style={styles.cardTitle}>{item.name}</Text>
       </View>
 
-      {/* Description */}
       {item.description ? (
         <Text style={styles.cardDescription}>{item.description}</Text>
       ) : null}
 
-      {/* Employees */}
       {item.employees?.length > 0 && (
         <>
           <Text style={styles.employeesLabel}>الموظفون</Text>
@@ -70,14 +69,23 @@ const ItineraryCard = React.memo(({
         </>
       )}
 
-      {/* Button */}
-      <TouchableOpacity
-        style={styles.tasksButton}
-        onPress={() => onShowTasks(item.id)}
-        activeOpacity={0.8}
-      >
-        <Text style={styles.tasksButtonText}>عرض المهام</Text>
-      </TouchableOpacity>
+      <View style={styles.actionsRow}>
+        <TouchableOpacity
+          style={styles.chatButton}
+          onPress={() => onOpenChat(item.id)}
+          activeOpacity={0.8}
+        >
+          <Ionicons name="chatbubble-ellipses-outline" size={20} color={PRIMARY} />
+        </TouchableOpacity>
+
+        <TouchableOpacity
+          style={styles.tasksButton}
+          onPress={() => onShowTasks(item.id)}
+          activeOpacity={0.8}
+        >
+          <Text style={styles.tasksButtonText}>عرض المهام</Text>
+        </TouchableOpacity>
+      </View>
     </View>
   </View>
 ));
@@ -99,16 +107,26 @@ export default function ItineraryScreen() {
     [router]
   );
 
+  const handleOpenChat = useCallback(
+    (id: number) => {
+      router.push(`/Chat/${id}` as any);
+    },
+    [router]
+  );
+
   const renderItem = useCallback(
     ({ item }: { item: Itinerary }) => (
-      <ItineraryCard item={item} onShowTasks={handleShowTasks} />
+      <ItineraryCard
+        item={item}
+        onShowTasks={handleShowTasks}
+        onOpenChat={handleOpenChat}
+      />
     ),
-    [handleShowTasks]
+    [handleShowTasks, handleOpenChat]
   );
 
   return (
     <SafeAreaView style={styles.root} edges={['top']}>
-      {/* Header */}
       <View style={styles.header}>
         <Text style={styles.headerSub}>قائمة</Text>
         <Text style={styles.headerTitle}>رحلاتي</Text>
@@ -143,7 +161,6 @@ const styles = StyleSheet.create({
     backgroundColor: PRIMARY,
   },
 
-  /* Header */
   header: {
     backgroundColor: PRIMARY,
     paddingHorizontal: 20,
@@ -166,12 +183,9 @@ const styles = StyleSheet.create({
     textAlign: 'right',
   },
 
-  /* Body */
   body: {
     flex: 1,
     backgroundColor: '#f5f3f7',
-    borderTopLeftRadius: 0,
-    borderTopRightRadius: 0,
   },
 
   listContent: {
@@ -179,7 +193,6 @@ const styles = StyleSheet.create({
     paddingBottom: 32,
   },
 
-  /* Card */
   card: {
     backgroundColor: '#fff',
     borderRadius: 16,
@@ -201,7 +214,6 @@ const styles = StyleSheet.create({
     padding: 16,
   },
 
-  /* Card header row */
   cardHeader: {
     flexDirection: 'row',
     justifyContent: 'space-between',
@@ -231,7 +243,6 @@ const styles = StyleSheet.create({
     fontFamily: APP_FONT_FAMILY,
   },
 
-  /* Description */
   cardDescription: {
     fontSize: 13,
     color: '#888',
@@ -241,7 +252,6 @@ const styles = StyleSheet.create({
     lineHeight: 20,
   },
 
-  /* Employees */
   employeesLabel: {
     fontSize: 12,
     color: '#aaa',
@@ -267,8 +277,13 @@ const styles = StyleSheet.create({
     fontFamily: APP_FONT_FAMILY,
   },
 
-  /* Button */
+  actionsRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 10,
+  },
   tasksButton: {
+    flex: 1,
     backgroundColor: PRIMARY,
     borderRadius: 10,
     paddingVertical: 10,
@@ -281,8 +296,17 @@ const styles = StyleSheet.create({
     fontWeight: '500',
     fontFamily: APP_FONT_FAMILY,
   },
+  chatButton: {
+    width: 42,
+    height: 42,
+    borderRadius: 10,
+    backgroundColor: ICON_BG,
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderWidth: 1,
+    borderColor: 'rgba(80,13,117,0.15)',
+  },
 
-  /* States */
   center: {
     flex: 1,
     justifyContent: 'center',
