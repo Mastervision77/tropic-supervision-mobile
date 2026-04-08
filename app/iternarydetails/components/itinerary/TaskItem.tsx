@@ -23,8 +23,8 @@ import CommentItem from "./CommentItem";
 import TaskMapModal from "./Taskmapmodal";
 import { Task } from "./types";
 
-if (Platform.OS === "android") {
-  UIManager.setLayoutAnimationEnabledExperimental?.(true);
+if (Platform.OS === "android" && UIManager.setLayoutAnimationEnabledExperimental) {
+  UIManager.setLayoutAnimationEnabledExperimental(true);
 }
 
 const PRIMARY = Colors.light.secondary;
@@ -465,26 +465,26 @@ const styles = StyleSheet.create({
     gap: 8,
     marginTop: 6,
   },
-  commentInput: {
-    flex: 1,
-    fontFamily: APP_FONT_FAMILY,
-    fontSize: 13,
-    borderWidth: 0.5,
-    borderColor: "rgba(80,13,117,0.2)",
-    borderRadius: 20,
-    paddingHorizontal: 14,
-    paddingVertical: Platform.OS === "ios" ? 8 : 4,
-    backgroundColor: "#faf7fc",
-    textAlign: "right",
-    maxHeight: 100,
-    color: "#222",
-  },
-  sendBtn: {
-    width: 36,
-    height: 36,
-    borderRadius: 18,
-    alignItems: "center",
-    justifyContent: "center",
-    backgroundColor: PRIMARY,
-  },
+commentInput: {
+  flex: 1,
+  fontFamily: APP_FONT_FAMILY,
+  fontSize: 13,
+  borderWidth: 0.5,
+  borderColor: "rgba(80,13,117,0.2)",
+  borderRadius: 20,
+  paddingHorizontal: 14,
+  paddingVertical: Platform.OS === "ios" ? 8 : 4,
+  backgroundColor: "#faf7fc",
+  textAlign: "right",
+  maxHeight: 100,
+  color: "#222",
+},
+sendBtn: {
+  width: 36,
+  height: 36,
+  borderRadius: 18,
+  alignItems: "center",
+  justifyContent: "center",
+  backgroundColor: PRIMARY,
+},
 });
