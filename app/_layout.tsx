@@ -8,6 +8,7 @@ import { useFonts } from "expo-font";
 import { Stack } from "expo-router";
 import * as SplashScreen from "expo-splash-screen";
 import { StatusBar } from "expo-status-bar";
+import * as Updates from "expo-updates";
 import { useEffect } from "react";
 import { I18nManager } from "react-native";
 import "react-native-reanimated";
@@ -19,7 +20,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 if (!I18nManager.isRTL) {
   I18nManager.allowRTL(false);
   I18nManager.forceRTL(false);
-  I18nManager.swapLeftAndRightInRTL(false);
+  Updates.reloadAsync().catch(() => {});
 }
 
 SplashScreen.preventAutoHideAsync();
@@ -71,14 +72,6 @@ export default function RootLayout() {
   }
 
   return (
-    // <ThemeProvider value={colorScheme === 'dark' ? customDarkTheme : customLightTheme}>
-    //   <Stack>
-    //     <Stack.Screen name="index" options={{ headerShown: false }} />
-    //     <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-    //     <Stack.Screen name="modal" options={{ presentation: 'modal', title: 'Modal' }} />
-    //   </Stack>
-    //   <StatusBar style="auto" />
-    // </ThemeProvider>
     <QueryClientProvider client={queryClient}>
       <AuthProvider>
         <ThemeProvider

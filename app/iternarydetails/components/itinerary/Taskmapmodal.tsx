@@ -1442,7 +1442,7 @@ const styles = StyleSheet.create({
 
   // Header
   header: {
-    flexDirection: 'row-reverse',
+    flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
     paddingHorizontal: 14,
@@ -1488,7 +1488,7 @@ const styles = StyleSheet.create({
     zIndex: 10,
   },
   navBannerInner: {
-    flexDirection: 'row-reverse',
+    flexDirection: 'row',
     alignItems: 'center',
     gap: 12,
   },
@@ -1524,7 +1524,7 @@ const styles = StyleSheet.create({
 
   // Arrived banner
   arrivedBanner: {
-    flexDirection: 'row-reverse',
+    flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
     gap: 10,
@@ -1588,19 +1588,19 @@ const styles = StyleSheet.create({
     gap: 10,
   },
   summaryRow: {
-    flexDirection: 'row-reverse',
+    flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
     gap: 16,
   },
-  summaryItem: { flexDirection: 'row-reverse', alignItems: 'center', gap: 4 },
+  summaryItem: { flexDirection: 'row', alignItems: 'center', gap: 4 },
   summarySep: { width: 1, height: 16, backgroundColor: '#e4e6ea' },
   summaryVal: { fontFamily: APP_FONT_FAMILY, fontSize: 15, fontWeight: '700' },
   summaryDur: { fontFamily: APP_FONT_FAMILY, fontSize: 15, color: '#606770' },
 
   // Steps
   stepsToggle: {
-    flexDirection: 'row-reverse',
+    flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
     gap: 4,
@@ -1609,7 +1609,7 @@ const styles = StyleSheet.create({
   stepsToggleText: { fontFamily: APP_FONT_FAMILY, fontSize: 13, fontWeight: '600' },
   stepsList: { maxHeight: 180 },
   stepRow: {
-    flexDirection: 'row-reverse',
+    flexDirection: 'row',
     alignItems: 'center',
     gap: 10,
     paddingVertical: 8,
@@ -1621,10 +1621,10 @@ const styles = StyleSheet.create({
   stepDist: { fontFamily: APP_FONT_FAMILY, fontSize: 11, color: '#888', minWidth: 44, textAlign: 'left' },
 
   // Action buttons
-  btnRow: { flexDirection: 'row-reverse', gap: 10 },
+  btnRow: { flexDirection: 'row', gap: 10 },
   startBtn: {
     flex: 1,
-    flexDirection: 'row-reverse',
+    flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
     gap: 8,
@@ -1633,7 +1633,7 @@ const styles = StyleSheet.create({
   },
   startBtnText: { fontFamily: APP_FONT_FAMILY, fontSize: 15, fontWeight: '700', color: '#fff' },
   gmapsBtn: {
-    flexDirection: 'row-reverse',
+    flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
     gap: 6,
@@ -1655,7 +1655,7 @@ const styles = StyleSheet.create({
     paddingBottom: 16,
   },
   stopBtn: {
-    flexDirection: 'row-reverse',
+    flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
     gap: 8,
