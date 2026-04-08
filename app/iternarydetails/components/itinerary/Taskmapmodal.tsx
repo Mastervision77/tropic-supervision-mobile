@@ -25,7 +25,7 @@ import { ThemedText } from '@/components/themed-text';
 import APP_FONT_FAMILY from '@/components/styles/font';
 import { Ionicons, MaterialCommunityIcons, FontAwesome5 } from '@expo/vector-icons';
 
-const GOOGLE_MAPS_API_KEY = process.env.EXPO_PUBLIC_GOOGLE_MAP_KEY;
+const GOOGLE_MAPS_API_KEY = `AIzaSyCJAlCdFVj0iNhlJzgbH7VmwhIAKPdkEa0`;
 const { width, height } = Dimensions.get('window');
 
 interface TaskMapModalProps {

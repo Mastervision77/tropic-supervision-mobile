@@ -104,7 +104,7 @@ const LoginStyles = StyleSheet.create({
   },
   button: {
     width: "100%",
-    backgroundColor: themeColors.primary,
+    backgroundColor: themeColors.secondary,
     paddingVertical: 15,
     borderRadius: 8,
     alignItems: "center",

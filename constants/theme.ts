@@ -3,13 +3,13 @@
 import { Platform } from 'react-native';
 import { Cairo_700Bold } from '@expo-google-fonts/cairo';
 
-const tintColorLight = '#500d75';
-const tintColorDark = '#500d75';
+const tintColorLight = '#ea7b25 ';
+const tintColorDark = '#0f83b0';
 
 export const Colors = {
   light: {
-    primary: '#500d75',
-    secondary: '#fe6813',
+    primary: '#ea7b25 ', 
+    secondary: '#0f83b0', 
     text: '#000',
     textBlack: '#000',
     background: '#FFFFFF',
@@ -19,12 +19,12 @@ export const Colors = {
     tabIconSelected: tintColorLight,
   },
   dark: {
-    primary: '#500d75',
-    secondary: '#fe6813',
+    primary: '#0f83b0',
+    secondary: '#ea7b25',
     text: '#ECEDEE',
     background: '#FFFFFF',
     tint: tintColorDark,
-    icon: '#500d75',
+    icon: '#ea7b25',
     tabIconDefault: '#b0a0bb',
     tabIconSelected: tintColorDark,
   },

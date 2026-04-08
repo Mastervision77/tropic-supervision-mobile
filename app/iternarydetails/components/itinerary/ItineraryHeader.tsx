@@ -64,14 +64,16 @@
 //   },
 // });
 
-import React from 'react';
-import { View, Text, StyleSheet } from 'react-native';
-import APP_FONT_FAMILY from '@/components/styles/font';
-import { ItineraryDetail } from './types';
-import { Ionicons } from '@expo/vector-icons';
+import APP_FONT_FAMILY from "@/components/styles/font";
+import { Colors } from "@/constants/theme";
+import { Ionicons } from "@expo/vector-icons";
+import React from "react";
+import { StyleSheet, Text, View } from "react-native";
+import { ItineraryDetail } from "./types";
 
-const PRIMARY = '#500d75';
-const ICON_BG = '#f0e8f5';
+const PRIMARY = Colors.light.secondary;
+
+const ICON_BG = Colors.light.primary;
 
 interface Props {
   itinerary: ItineraryDetail;
@@ -109,7 +111,7 @@ const ItineraryHeader = React.memo(({ itinerary }: Props) => (
         </View>
         <Text style={styles.infoText}>
           {itinerary.program_trip.travel_date}
-          {'  ←  '}
+          {"  ←  "}
           {itinerary.program_trip.return_date}
         </Text>
       </View>
@@ -121,12 +123,12 @@ export default ItineraryHeader;
 
 const styles = StyleSheet.create({
   card: {
-    backgroundColor: '#fff',
+    backgroundColor: "#fff",
     borderRadius: 16,
     marginBottom: 16,
     borderWidth: 0.5,
-    borderColor: 'rgba(80,13,117,0.1)',
-    overflow: 'hidden',
+    borderColor: "rgba(80,13,117,0.1)",
+    overflow: "hidden",
     shadowColor: PRIMARY,
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.06,
@@ -143,27 +145,27 @@ const styles = StyleSheet.create({
   name: {
     fontFamily: APP_FONT_FAMILY,
     fontSize: 19,
-    fontWeight: '600',
+    fontWeight: "600",
     color: PRIMARY,
-    textAlign: 'right',
+    textAlign: "right",
     marginBottom: 6,
   },
   description: {
     fontFamily: APP_FONT_FAMILY,
     fontSize: 13,
-    color: '#888',
-    textAlign: 'right',
+    color: "#888",
+    textAlign: "right",
     lineHeight: 20,
     marginBottom: 4,
   },
   divider: {
     height: 0.5,
-    backgroundColor: 'rgba(80,13,117,0.1)',
+    backgroundColor: "rgba(80,13,117,0.1)",
     marginVertical: 12,
   },
   infoRow: {
-    flexDirection: 'row-reverse',
-    alignItems: 'center',
+    flexDirection: "row-reverse",
+    alignItems: "center",
     gap: 8,
     marginBottom: 8,
   },
@@ -171,15 +173,15 @@ const styles = StyleSheet.create({
     width: 28,
     height: 28,
     borderRadius: 8,
-    backgroundColor: '#f0e8f5',
-    alignItems: 'center',
-    justifyContent: 'center',
+    backgroundColor: "#f0e8f5",
+    alignItems: "center",
+    justifyContent: "center",
   },
   infoText: {
     fontFamily: APP_FONT_FAMILY,
     fontSize: 13,
-    color: '#555',
-    textAlign: 'right',
+    color: "#555",
+    textAlign: "right",
     flex: 1,
   },
 });

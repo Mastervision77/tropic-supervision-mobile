@@ -13,7 +13,7 @@ type UseMutateProps<T> = {
   method?: "post" | "put" | "delete";
 };
 
-const API_BASE_URL = process.env.EXPO_PUBLIC_API_BASE_URL;
+const API_BASE_URL = `https://azzka.app/back/public/api/v1`;
 
 export function useMutate<T>({
   endpoint,

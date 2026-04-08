@@ -1,17 +1,26 @@
-import React, { useCallback } from 'react';
-import { StyleSheet, FlatList, ActivityIndicator, View, Text, TouchableOpacity } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
-import { useRouter } from 'expo-router';
-import { Ionicons } from '@expo/vector-icons';
+import { Ionicons } from "@expo/vector-icons";
+import { useRouter } from "expo-router";
+import React, { useCallback } from "react";
+import {
+  ActivityIndicator,
+  FlatList,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
 
-import { ThemedText } from '@/components/themed-text';
-import { ThemedView } from '@/components/themed-view';
-import { useAuth } from '@/hooks/useAuth';
-import useFetch from '@/hooks/useFetch';
-import APP_FONT_FAMILY from '@/components/styles/font';
+import APP_FONT_FAMILY from "@/components/styles/font";
+import { ThemedText } from "@/components/themed-text";
+import { ThemedView } from "@/components/themed-view";
+import { Colors } from "@/constants/theme";
+import { useAuth } from "@/hooks/useAuth";
+import useFetch from "@/hooks/useFetch";
 
-const PRIMARY = '#500d75';
-const ICON_BG = '#f0e8f5';
+const PRIMARY = Colors.light.secondary;
+
+const ICON_BG = Colors.light.primary;
 
 interface Employee {
   id: number;
@@ -30,65 +39,71 @@ interface ApiResponse {
   data: Itinerary[];
 }
 
-const ItineraryCard = React.memo(({
-  item,
-  onShowTasks,
-  onOpenChat,
-}: {
-  item: Itinerary;
-  onShowTasks: (id: number) => void;
-  onOpenChat: (id: number) => void;
-}) => (
-  <View style={styles.card}>
-    <View style={styles.cardAccent} />
+const ItineraryCard = React.memo(
+  ({
+    item,
+    onShowTasks,
+    onOpenChat,
+  }: {
+    item: Itinerary;
+    onShowTasks: (id: number) => void;
+    onOpenChat: (id: number) => void;
+  }) => (
+    <View style={styles.card}>
+      <View style={styles.cardAccent} />
 
-    <View style={styles.cardBody}>
-      <View style={styles.cardHeader}>
-        <View style={styles.expenseBadge}>
-          <Text style={styles.expenseText}>
-            {Number(item.total_expenses).toLocaleString('en-US')} SAR
-          </Text>
-        </View>
-        <Text style={styles.cardTitle}>{item.name}</Text>
-      </View>
-
-      {item.description ? (
-        <Text style={styles.cardDescription}>{item.description}</Text>
-      ) : null}
-
-      {item.employees?.length > 0 && (
-        <>
-          <Text style={styles.employeesLabel}>الموظفون</Text>
-          <View style={styles.employeesRow}>
-            {item.employees.map((emp) => (
-              <View key={emp.id} style={styles.employeePill}>
-                <Text style={styles.employeePillText}>{emp.name}</Text>
-              </View>
-            ))}
+      <View style={styles.cardBody}>
+        <View style={styles.cardHeader}>
+          <View style={styles.expenseBadge}>
+            <Text style={styles.expenseText}>
+              {Number(item.total_expenses).toLocaleString("en-US")} SAR
+            </Text>
           </View>
-        </>
-      )}
+          <Text style={styles.cardTitle}>{item.name}</Text>
+        </View>
 
-      <View style={styles.actionsRow}>
-        <TouchableOpacity
-          style={styles.chatButton}
-          onPress={() => onOpenChat(item.id)}
-          activeOpacity={0.8}
-        >
-          <Ionicons name="chatbubble-ellipses-outline" size={20} color={PRIMARY} />
-        </TouchableOpacity>
+        {item.description ? (
+          <Text style={styles.cardDescription}>{item.description}</Text>
+        ) : null}
 
-        <TouchableOpacity
-          style={styles.tasksButton}
-          onPress={() => onShowTasks(item.id)}
-          activeOpacity={0.8}
-        >
-          <Text style={styles.tasksButtonText}>عرض المهام</Text>
-        </TouchableOpacity>
+        {item.employees?.length > 0 && (
+          <>
+            <Text style={styles.employeesLabel}>الموظفون</Text>
+            <View style={styles.employeesRow}>
+              {item.employees.map((emp) => (
+                <View key={emp.id} style={styles.employeePill}>
+                  <Text style={styles.employeePillText}>{emp.name}</Text>
+                </View>
+              ))}
+            </View>
+          </>
+        )}
+
+        <View style={styles.actionsRow}>
+          <TouchableOpacity
+            style={styles.chatButton}
+            onPress={() => onOpenChat(item.id)}
+            activeOpacity={0.8}
+          >
+            <Ionicons
+              name="chatbubble-ellipses-outline"
+              size={20}
+              color={PRIMARY}
+            />
+          </TouchableOpacity>
+
+          <TouchableOpacity
+            style={styles.tasksButton}
+            onPress={() => onShowTasks(item.id)}
+            activeOpacity={0.8}
+          >
+            <Text style={styles.tasksButtonText}>عرض المهام</Text>
+          </TouchableOpacity>
+        </View>
       </View>
     </View>
-  </View>
-));
+  ),
+);
 
 export default function ItineraryScreen() {
   const { user } = useAuth();
@@ -97,21 +112,21 @@ export default function ItineraryScreen() {
 
   const { data, isLoading, isError } = useFetch<ApiResponse>({
     endpoint: `itinerary?employee_id=${employeeId}`,
-    queryKey: ['itineraries', 'employee', employeeId],
+    queryKey: ["itineraries", "employee", employeeId],
   });
 
   const handleShowTasks = useCallback(
     (id: number) => {
       router.push(`/iternarydetails/${id}` as any);
     },
-    [router]
+    [router],
   );
 
   const handleOpenChat = useCallback(
     (id: number) => {
       router.push(`/Chat/${id}` as any);
     },
-    [router]
+    [router],
   );
 
   const renderItem = useCallback(
@@ -122,11 +137,11 @@ export default function ItineraryScreen() {
         onOpenChat={handleOpenChat}
       />
     ),
-    [handleShowTasks, handleOpenChat]
+    [handleShowTasks, handleOpenChat],
   );
 
   return (
-    <SafeAreaView style={styles.root} edges={['top']}>
+    <SafeAreaView style={styles.root} edges={["top"]}>
       <View style={styles.header}>
         <Text style={styles.headerSub}>قائمة</Text>
         <Text style={styles.headerTitle}>رحلاتي</Text>
@@ -139,7 +154,9 @@ export default function ItineraryScreen() {
           </View>
         ) : isError ? (
           <View style={styles.center}>
-            <ThemedText style={styles.errorText}>حدث خطأ أثناء تحميل البيانات</ThemedText>
+            <ThemedText style={styles.errorText}>
+              حدث خطأ أثناء تحميل البيانات
+            </ThemedText>
           </View>
         ) : (
           <FlatList
@@ -164,28 +181,28 @@ const styles = StyleSheet.create({
   header: {
     backgroundColor: PRIMARY,
     paddingHorizontal: 20,
-    paddingTop: 12,
+    paddingTop: 10,
     paddingBottom: 48,
-    alignItems: 'flex-end',
+    alignItems: "flex-end",
   },
   headerSub: {
-    color: 'rgba(255,255,255,0.6)',
+    color: "rgba(255,255,255,0.6)",
     fontSize: 13,
     marginBottom: 4,
     fontFamily: APP_FONT_FAMILY,
-    textAlign: 'right',
+    textAlign: "right",
   },
   headerTitle: {
-    color: '#fff',
+    color: "#fff",
     fontSize: 22,
-    fontWeight: '600',
+    fontWeight: "600",
     fontFamily: APP_FONT_FAMILY,
-    textAlign: 'right',
+    textAlign: "right",
   },
 
   body: {
     flex: 1,
-    backgroundColor: '#f5f3f7',
+    backgroundColor: "#f5f3f7",
   },
 
   listContent: {
@@ -194,12 +211,12 @@ const styles = StyleSheet.create({
   },
 
   card: {
-    backgroundColor: '#fff',
+    backgroundColor: "#fff",
     borderRadius: 16,
     marginBottom: 14,
     borderWidth: 0.5,
-    borderColor: 'rgba(80,13,117,0.1)',
-    overflow: 'hidden',
+    borderColor: "rgba(80,13,117,0.1)",
+    overflow: "hidden",
     shadowColor: PRIMARY,
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.06,
@@ -215,17 +232,17 @@ const styles = StyleSheet.create({
   },
 
   cardHeader: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'flex-start',
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "flex-start",
     marginBottom: 8,
   },
   cardTitle: {
     fontSize: 16,
-    fontWeight: '500',
-    color: '#1a1a1a',
+    fontWeight: "500",
+    color: "#1a1a1a",
     fontFamily: APP_FONT_FAMILY,
-    textAlign: 'right',
+    textAlign: "right",
     flex: 1,
     marginLeft: 10,
   },
@@ -238,30 +255,30 @@ const styles = StyleSheet.create({
   },
   expenseText: {
     fontSize: 13,
-    fontWeight: '500',
+    fontWeight: "500",
     color: PRIMARY,
     fontFamily: APP_FONT_FAMILY,
   },
 
   cardDescription: {
     fontSize: 13,
-    color: '#888',
+    color: "#888",
     fontFamily: APP_FONT_FAMILY,
-    textAlign: 'right',
+    textAlign: "right",
     marginBottom: 12,
     lineHeight: 20,
   },
 
   employeesLabel: {
     fontSize: 12,
-    color: '#aaa',
+    color: "#aaa",
     fontFamily: APP_FONT_FAMILY,
-    textAlign: 'right',
+    textAlign: "right",
     marginBottom: 6,
   },
   employeesRow: {
-    flexDirection: 'row-reverse',
-    flexWrap: 'wrap',
+    flexDirection: "row-reverse",
+    flexWrap: "wrap",
     gap: 6,
     marginBottom: 14,
   },
@@ -278,8 +295,8 @@ const styles = StyleSheet.create({
   },
 
   actionsRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
+    flexDirection: "row",
+    alignItems: "center",
     gap: 10,
   },
   tasksButton: {
@@ -287,13 +304,13 @@ const styles = StyleSheet.create({
     backgroundColor: PRIMARY,
     borderRadius: 10,
     paddingVertical: 10,
-    alignItems: 'center',
-    justifyContent: 'center',
+    alignItems: "center",
+    justifyContent: "center",
   },
   tasksButtonText: {
-    color: '#fff',
+    color: "#fff",
     fontSize: 14,
-    fontWeight: '500',
+    fontWeight: "500",
     fontFamily: APP_FONT_FAMILY,
   },
   chatButton: {
@@ -301,21 +318,21 @@ const styles = StyleSheet.create({
     height: 42,
     borderRadius: 10,
     backgroundColor: ICON_BG,
-    alignItems: 'center',
-    justifyContent: 'center',
+    alignItems: "center",
+    justifyContent: "center",
     borderWidth: 1,
-    borderColor: 'rgba(80,13,117,0.15)',
+    borderColor: "rgba(80,13,117,0.15)",
   },
 
   center: {
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
+    justifyContent: "center",
+    alignItems: "center",
   },
   errorText: {
-    color: 'red',
+    color: "red",
     fontFamily: APP_FONT_FAMILY,
-    textAlign: 'right',
+    textAlign: "right",
     fontSize: 14,
   },
 });

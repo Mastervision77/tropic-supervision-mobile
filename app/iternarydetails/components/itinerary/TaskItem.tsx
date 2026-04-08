@@ -1,33 +1,35 @@
-import React, { useCallback, useState, useRef } from 'react';
+import APP_FONT_FAMILY from "@/components/styles/font";
+import { Colors } from "@/constants/theme";
+import { useAuth } from "@/hooks/useAuth";
+import { useMutate } from "@/hooks/useMutate";
+import { Ionicons } from "@expo/vector-icons";
+import * as Location from "expo-location";
+import React, { useCallback, useRef, useState } from "react";
 import {
-  View,
-  Text,
-  StyleSheet,
-  TouchableOpacity,
+  ActivityIndicator,
+  Alert,
+  I18nManager,
   LayoutAnimation,
   Platform,
-  UIManager,
-  TextInput,
-  ActivityIndicator,
-  I18nManager,
-  Alert,
   ScrollView,
-} from 'react-native';
-import APP_FONT_FAMILY from '@/components/styles/font';
-import CommentItem from './CommentItem';
-import { Task } from './types';
-import { useAuth } from '@/hooks/useAuth';
-import { useMutate } from '@/hooks/useMutate';
-import { Ionicons } from '@expo/vector-icons';
-import TaskMapModal from './Taskmapmodal';
-import * as Location from 'expo-location';
+  StyleSheet,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  UIManager,
+  View,
+} from "react-native";
+import CommentItem from "./CommentItem";
+import TaskMapModal from "./Taskmapmodal";
+import { Task } from "./types";
 
-if (Platform.OS === 'android') {
+if (Platform.OS === "android") {
   UIManager.setLayoutAnimationEnabledExperimental?.(true);
 }
 
-const PRIMARY = '#500d75';
-const ICON_BG = '#f0e8f5';
+const PRIMARY = Colors.light.secondary;
+
+const ICON_BG = Colors.light.primary;
 
 interface Props {
   task: Task;
@@ -37,12 +39,12 @@ interface Props {
 function formatDate(dateStr: string): string {
   try {
     const d = new Date(dateStr);
-    return d.toLocaleDateString('ar-EG', {
-      year: 'numeric',
-      month: 'short',
-      day: 'numeric',
-      hour: '2-digit',
-      minute: '2-digit',
+    return d.toLocaleDateString("ar-EG", {
+      year: "numeric",
+      month: "short",
+      day: "numeric",
+      hour: "2-digit",
+      minute: "2-digit",
     });
   } catch {
     return dateStr;
@@ -56,59 +58,64 @@ interface AddCommentProps {
   theme: any;
 }
 
-const AddComment = React.memo(({ taskId, employeeId, onCommentAdded }: AddCommentProps) => {
-  const [text, setText] = useState('');
+const AddComment = React.memo(
+  ({ taskId, employeeId, onCommentAdded }: AddCommentProps) => {
+    const [text, setText] = useState("");
 
-  const { mutate: postComment, isPending } = useMutate<any>({
-    endpoint: `task-comments/${taskId}`,
-    mutationKey: ['task-comments', taskId],
-    onSuccess: (response) => {
-      setText('');
-      const comment = response?.comment ?? response?.data ?? response;
-      onCommentAdded(comment);
-    },
-  });
+    const { mutate: postComment, isPending } = useMutate<any>({
+      endpoint: `task-comments/${taskId}`,
+      mutationKey: ["task-comments", taskId],
+      onSuccess: (response) => {
+        setText("");
+        const comment = response?.comment ?? response?.data ?? response;
+        onCommentAdded(comment);
+      },
+    });
 
-  const submit = useCallback(() => {
-    const trimmed = text.trim();
-    if (!trimmed || isPending) return;
-    postComment({ employee_id: employeeId, comment: trimmed });
-  }, [text, isPending, employeeId, postComment]);
+    const submit = useCallback(() => {
+      const trimmed = text.trim();
+      if (!trimmed || isPending) return;
+      postComment({ employee_id: employeeId, comment: trimmed });
+    }, [text, isPending, employeeId, postComment]);
 
-  return (
-    <View style={styles.addCommentRow}>
-      <TouchableOpacity
-        onPress={submit}
-        disabled={isPending || !text.trim()}
-        style={[styles.sendBtn, (isPending || !text.trim()) && { opacity: 0.45 }]}
-        activeOpacity={0.8}
-      >
-        {isPending ? (
-          <ActivityIndicator size="small" color="#fff" />
-        ) : (
-          <Ionicons
-            name="send"
-            size={15}
-            color="#fff"
-            style={{ transform: [{ scaleX: I18nManager.isRTL ? 1 : -1 }] }}
-          />
-        )}
-      </TouchableOpacity>
+    return (
+      <View style={styles.addCommentRow}>
+        <TouchableOpacity
+          onPress={submit}
+          disabled={isPending || !text.trim()}
+          style={[
+            styles.sendBtn,
+            (isPending || !text.trim()) && { opacity: 0.45 },
+          ]}
+          activeOpacity={0.8}
+        >
+          {isPending ? (
+            <ActivityIndicator size="small" color="#fff" />
+          ) : (
+            <Ionicons
+              name="send"
+              size={15}
+              color="#fff"
+              style={{ transform: [{ scaleX: I18nManager.isRTL ? 1 : -1 }] }}
+            />
+          )}
+        </TouchableOpacity>
 
-      <TextInput
-        style={styles.commentInput}
-        placeholder="أضف تعليقاً…"
-        placeholderTextColor="#bbb"
-        value={text}
-        onChangeText={setText}
-        multiline
-        textAlign="right"
-        returnKeyType="send"
-        onSubmitEditing={submit}
-      />
-    </View>
-  );
-});
+        <TextInput
+          style={styles.commentInput}
+          placeholder="أضف تعليقاً…"
+          placeholderTextColor="#bbb"
+          value={text}
+          onChangeText={setText}
+          multiline
+          textAlign="right"
+          returnKeyType="send"
+          onSubmitEditing={submit}
+        />
+      </View>
+    );
+  },
+);
 
 // ── CommentsSection ────────────────────────────────────────────────────────────
 interface CommentsSectionProps {
@@ -117,45 +124,60 @@ interface CommentsSectionProps {
   employeeId: number | string;
 }
 
-const CommentsSection = React.memo(({ task, theme, employeeId }: CommentsSectionProps) => {
-  const [comments, setComments] = useState<Task['comments']>(task.comments ?? []);
-  const scrollViewRef = useRef<ScrollView>(null);
+const CommentsSection = React.memo(
+  ({ task, theme, employeeId }: CommentsSectionProps) => {
+    const [comments, setComments] = useState<Task["comments"]>(
+      task.comments ?? [],
+    );
+    const scrollViewRef = useRef<ScrollView>(null);
 
-  const handleNewComment = useCallback((newComment: any) => {
-    if (!newComment || typeof newComment !== 'object' || Array.isArray(newComment)) return;
-    const normalized = { ...newComment, id: newComment.id ?? `temp-${Date.now()}` };
-    setComments((prev) => [...prev, normalized]);
-    setTimeout(() => scrollViewRef.current?.scrollToEnd({ animated: true }), 100);
-  }, []);
+    const handleNewComment = useCallback((newComment: any) => {
+      if (
+        !newComment ||
+        typeof newComment !== "object" ||
+        Array.isArray(newComment)
+      )
+        return;
+      const normalized = {
+        ...newComment,
+        id: newComment.id ?? `temp-${Date.now()}`,
+      };
+      setComments((prev) => [...prev, normalized]);
+      setTimeout(
+        () => scrollViewRef.current?.scrollToEnd({ animated: true }),
+        100,
+      );
+    }, []);
 
-  return (
-    <View style={styles.commentsWrapper}>
-      <ScrollView
-        ref={scrollViewRef}
-        style={styles.commentsScrollView}
-        showsVerticalScrollIndicator={false}
-        keyboardShouldPersistTaps="handled"
-      >
-        {comments.length > 0 ? (
-          <View style={styles.commentsList}>
-            {comments.map((c, index) => (
-              <CommentItem key={c.id ?? `comment-${index}`} comment={c} />
-            ))}
-          </View>
-        ) : (
-          <Text style={styles.noComments}>لا توجد تعليقات بعد</Text>
-        )}
-      </ScrollView>
+    return (
+      <View style={styles.commentsWrapper}>
+        <ScrollView
+          ref={scrollViewRef}
+          style={styles.commentsScrollView}
+          showsVerticalScrollIndicator={false}
+          keyboardShouldPersistTaps="handled"
+        >
+          {comments.length > 0 ? (
+            <View style={styles.commentsList}>
+              {comments.map((c, index) => (
+                <CommentItem key={c.id ?? `comment-${index}`} comment={c} />
+              ))}
+            </View>
+          ) : (
+            <Text style={styles.noComments}>لا توجد تعليقات بعد</Text>
+          )}
+        </ScrollView>
 
-      <AddComment
-        taskId={task.id}
-        employeeId={employeeId}
-        onCommentAdded={handleNewComment}
-        theme={theme}
-      />
-    </View>
-  );
-});
+        <AddComment
+          taskId={task.id}
+          employeeId={employeeId}
+          onCommentAdded={handleNewComment}
+          theme={theme}
+        />
+      </View>
+    );
+  },
+);
 
 // ── TaskItem ───────────────────────────────────────────────────────────────────
 const TaskItem = React.memo(({ task, theme }: Props) => {
@@ -165,7 +187,6 @@ const TaskItem = React.memo(({ task, theme }: Props) => {
   const [commentsOpen, setCommentsOpen] = useState(false);
   const [mapVisible, setMapVisible] = useState(false);
   const [isLocating, setIsLocating] = useState(false);
-
 
   const canCheckin = task.can_checkin === 1;
   const commentCount = task.comments?.length ?? 0;
@@ -177,9 +198,9 @@ const TaskItem = React.memo(({ task, theme }: Props) => {
 
   const { mutate: doCheckin, isPending: checkinLoading } = useMutate<any>({
     endpoint: `itineraries/${task.id}/checkin`,
-    mutationKey: ['checkin', task.id],
+    mutationKey: ["checkin", task.id],
     onSuccess: () => {
-      Alert.alert('✅', 'تم تسجيل الحضور بنجاح');
+      Alert.alert("✅", "تم تسجيل الحضور بنجاح");
     },
   });
 
@@ -189,8 +210,8 @@ const TaskItem = React.memo(({ task, theme }: Props) => {
     setIsLocating(true);
     try {
       const { status } = await Location.requestForegroundPermissionsAsync();
-      if (status !== 'granted') {
-        Alert.alert('خطأ', 'مش قادر أوصل للموقع، اسمح للتطبيق بالوصول');
+      if (status !== "granted") {
+        Alert.alert("خطأ", "مش قادر أوصل للموقع، اسمح للتطبيق بالوصول");
         return;
       }
 
@@ -227,10 +248,14 @@ const TaskItem = React.memo(({ task, theme }: Props) => {
 
       {/* ── Comment count ── */}
       {commentCount > 0 && (
-        <TouchableOpacity onPress={toggleComments} activeOpacity={0.7} style={styles.statsRow}>
+        <TouchableOpacity
+          onPress={toggleComments}
+          activeOpacity={0.7}
+          style={styles.statsRow}
+        >
           <Ionicons name="chatbubble-outline" size={13} color="#aaa" />
           <Text style={styles.statsText}>
-            {commentCount} {commentCount === 1 ? 'تعليق' : 'تعليقات'}
+            {commentCount} {commentCount === 1 ? "تعليق" : "تعليقات"}
           </Text>
         </TouchableOpacity>
       )}
@@ -247,11 +272,15 @@ const TaskItem = React.memo(({ task, theme }: Props) => {
           activeOpacity={0.7}
         >
           <Ionicons
-            name={commentsOpen ? 'chatbubble' : 'chatbubble-outline'}
+            name={commentsOpen ? "chatbubble" : "chatbubble-outline"}
             size={17}
-            color={commentsOpen ? PRIMARY : '#888'}
+            color={commentsOpen ? PRIMARY : "#888"}
           />
-          <Text style={[styles.actionLabel, commentsOpen && { color: PRIMARY }]}>تعليق</Text>
+          <Text
+            style={[styles.actionLabel, commentsOpen && { color: PRIMARY }]}
+          >
+            تعليق
+          </Text>
         </TouchableOpacity>
 
         {/* Checkin */}
@@ -264,11 +293,16 @@ const TaskItem = React.memo(({ task, theme }: Props) => {
           {isCheckinBusy ? (
             <ActivityIndicator size="small" color={PRIMARY} />
           ) : (
-            <Ionicons name="location-outline" size={17} color={canCheckin ? '#888' : '#ccc'} />
+            <Ionicons
+              name="location-outline"
+              size={17}
+              color={canCheckin ? "#888" : "#ccc"}
+            />
           )}
-          <Text style={[styles.actionLabel, !canCheckin && { color: '#ccc' }]}>تسجيل</Text>
+          <Text style={[styles.actionLabel, !canCheckin && { color: "#ccc" }]}>
+            تسجيل
+          </Text>
         </TouchableOpacity>
-
 
         <TouchableOpacity
           style={styles.actionBtn}
@@ -280,7 +314,6 @@ const TaskItem = React.memo(({ task, theme }: Props) => {
         </TouchableOpacity>
       </View>
 
-
       <TaskMapModal
         visible={mapVisible}
         onClose={() => setMapVisible(false)}
@@ -289,7 +322,6 @@ const TaskItem = React.memo(({ task, theme }: Props) => {
         taskName={task.name}
         theme={theme}
       />
-
 
       {commentsOpen && (
         <CommentsSection task={task} theme={theme} employeeId={employeeId} />
@@ -302,12 +334,12 @@ export default TaskItem;
 
 const styles = StyleSheet.create({
   card: {
-    backgroundColor: '#fff',
+    backgroundColor: "#fff",
     borderRadius: 12,
     borderWidth: 0.5,
-    borderColor: 'rgba(80,13,117,0.1)',
+    borderColor: "rgba(80,13,117,0.1)",
     marginBottom: 10,
-    overflow: 'hidden',
+    overflow: "hidden",
     shadowColor: PRIMARY,
     shadowOffset: { width: 0, height: 1 },
     shadowOpacity: 0.05,
@@ -317,28 +349,28 @@ const styles = StyleSheet.create({
 
   /* Header */
   cardHeader: {
-    flexDirection: 'row-reverse',
-    alignItems: 'center',
+    flexDirection: "row-reverse",
+    alignItems: "center",
     paddingHorizontal: 14,
     paddingTop: 14,
     paddingBottom: 8,
   },
   taskMeta: {
     flex: 1,
-    alignItems: 'flex-end',
+    alignItems: "flex-end",
   },
   taskName: {
     fontFamily: APP_FONT_FAMILY,
     fontSize: 15,
-    fontWeight: '500',
+    fontWeight: "500",
     color: PRIMARY,
-    textAlign: 'right',
+    textAlign: "right",
   },
   taskDate: {
     fontFamily: APP_FONT_FAMILY,
     fontSize: 11,
-    color: '#aaa',
-    textAlign: 'right',
+    color: "#aaa",
+    textAlign: "right",
     marginTop: 3,
   },
 
@@ -346,8 +378,8 @@ const styles = StyleSheet.create({
   taskDescription: {
     fontFamily: APP_FONT_FAMILY,
     fontSize: 13,
-    color: '#555',
-    textAlign: 'right',
+    color: "#555",
+    textAlign: "right",
     lineHeight: 20,
     paddingHorizontal: 14,
     paddingBottom: 10,
@@ -355,8 +387,8 @@ const styles = StyleSheet.create({
 
   /* Stats */
   statsRow: {
-    flexDirection: 'row-reverse',
-    alignItems: 'center',
+    flexDirection: "row-reverse",
+    alignItems: "center",
     gap: 4,
     paddingHorizontal: 14,
     paddingBottom: 8,
@@ -364,27 +396,27 @@ const styles = StyleSheet.create({
   statsText: {
     fontFamily: APP_FONT_FAMILY,
     fontSize: 12,
-    color: '#aaa',
+    color: "#aaa",
   },
 
   /* Divider */
   divider: {
     height: 0.5,
-    backgroundColor: 'rgba(80,13,117,0.1)',
+    backgroundColor: "rgba(80,13,117,0.1)",
     marginHorizontal: 14,
   },
 
   /* Actions */
   actionsRow: {
-    flexDirection: 'row-reverse',
-    justifyContent: 'space-around',
+    flexDirection: "row-reverse",
+    justifyContent: "space-around",
     paddingVertical: 2,
   },
   actionBtn: {
     flex: 1,
-    flexDirection: 'row-reverse',
-    alignItems: 'center',
-    justifyContent: 'center',
+    flexDirection: "row-reverse",
+    alignItems: "center",
+    justifyContent: "center",
     paddingVertical: 10,
     gap: 5,
     borderRadius: 6,
@@ -398,13 +430,13 @@ const styles = StyleSheet.create({
   actionLabel: {
     fontFamily: APP_FONT_FAMILY,
     fontSize: 13,
-    color: '#888',
+    color: "#888",
   },
 
   /* Comments section */
   commentsWrapper: {
     borderTopWidth: 0.5,
-    borderTopColor: 'rgba(80,13,117,0.1)',
+    borderTopColor: "rgba(80,13,117,0.1)",
     paddingHorizontal: 14,
     paddingTop: 10,
     paddingBottom: 6,
@@ -418,17 +450,17 @@ const styles = StyleSheet.create({
   noComments: {
     fontFamily: APP_FONT_FAMILY,
     fontSize: 12,
-    color: '#bbb',
-    textAlign: 'center',
+    color: "#bbb",
+    textAlign: "center",
     paddingVertical: 10,
   },
 
   /* Add comment */
   addCommentRow: {
-    flexDirection: 'row-reverse',
-    alignItems: 'center',
+    flexDirection: "row-reverse",
+    alignItems: "center",
     borderTopWidth: 0.5,
-    borderTopColor: 'rgba(80,13,117,0.1)',
+    borderTopColor: "rgba(80,13,117,0.1)",
     paddingTop: 10,
     gap: 8,
     marginTop: 6,
@@ -438,21 +470,21 @@ const styles = StyleSheet.create({
     fontFamily: APP_FONT_FAMILY,
     fontSize: 13,
     borderWidth: 0.5,
-    borderColor: 'rgba(80,13,117,0.2)',
+    borderColor: "rgba(80,13,117,0.2)",
     borderRadius: 20,
     paddingHorizontal: 14,
-    paddingVertical: Platform.OS === 'ios' ? 8 : 4,
-    backgroundColor: '#faf7fc',
-    textAlign: 'right',
+    paddingVertical: Platform.OS === "ios" ? 8 : 4,
+    backgroundColor: "#faf7fc",
+    textAlign: "right",
     maxHeight: 100,
-    color: '#222',
+    color: "#222",
   },
   sendBtn: {
     width: 36,
     height: 36,
     borderRadius: 18,
-    alignItems: 'center',
-    justifyContent: 'center',
+    alignItems: "center",
+    justifyContent: "center",
     backgroundColor: PRIMARY,
   },
 });

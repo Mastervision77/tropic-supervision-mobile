@@ -1,40 +1,50 @@
-import React from 'react';
-import { StyleSheet, View, Text, ActivityIndicator, ScrollView } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
-import { useAuth } from '@/hooks/useAuth';
-import APP_FONT_FAMILY from '@/components/styles/font';
-import useFetch from '@/hooks/useFetch';
-import { Ionicons } from '@expo/vector-icons';
+import APP_FONT_FAMILY from "@/components/styles/font";
+import { Colors } from "@/constants/theme";
+import { useAuth } from "@/hooks/useAuth";
+import useFetch from "@/hooks/useFetch";
+import { Ionicons } from "@expo/vector-icons";
+import React from "react";
+import {
+  ActivityIndicator,
+  ScrollView,
+  StyleSheet,
+  Text,
+  View,
+} from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
 
-const PRIMARY = '#500d75';
-const ICON_BG = '#f0e8f5';
+const PRIMARY = Colors.light.secondary;
+
+const ICON_BG = Colors.light.primary;
 
 export default function HomeScreen() {
   const { user } = useAuth();
   const employeeId = (user as any)?.employee?.id;
 
   const { data, isLoading } = useFetch({
-    queryKey: ['employee-wallets'],
+    queryKey: ["employee-wallets"],
     endpoint: `master-data/employee-wallets?employee_id=${employeeId}`,
     enabled: !!employeeId,
   });
 
   const wallet = (data as any)?.data?.data?.[0];
-  const balance = wallet ? Number(wallet.amount).toLocaleString('en-US') : null;
+  const balance = wallet ? Number(wallet.amount).toLocaleString("en-US") : null;
 
   return (
-    <SafeAreaView style={styles.root} edges={['top']}>
-      <ScrollView contentContainerStyle={styles.scroll} showsVerticalScrollIndicator={false}>
-
+    <SafeAreaView style={styles.root} edges={["top"]}>
+      <ScrollView
+        contentContainerStyle={styles.scroll}
+        showsVerticalScrollIndicator={false}
+      >
         {/* ── Header ── */}
         <View style={styles.header}>
           <View style={styles.headerTexts}>
             <Text style={styles.greeting}>مرحباً،</Text>
-            <Text style={styles.name}>{user?.name || 'ضيف'}</Text>
+            <Text style={styles.name}>{user?.name || "ضيف"}</Text>
           </View>
           <View style={styles.avatarCircle}>
             <Text style={styles.avatarInitial}>
-              {(user?.name || 'ض').charAt(0)}
+              {(user?.name || "ض").charAt(0)}
             </Text>
           </View>
         </View>
@@ -81,7 +91,9 @@ export default function HomeScreen() {
             ) : (
               <View style={styles.noDataWrap}>
                 <Ionicons name="wallet-outline" size={36} color="#ddd" />
-                <Text style={styles.noDataText}>لا توجد بيانات للمحفظة حالياً</Text>
+                <Text style={styles.noDataText}>
+                  لا توجد بيانات للمحفظة حالياً
+                </Text>
               </View>
             )}
           </View>
@@ -92,7 +104,11 @@ export default function HomeScreen() {
           <View style={styles.statsRow}>
             <View style={styles.statCard}>
               <View style={styles.statIconWrap}>
-                <Ionicons name="trending-up-outline" size={18} color={PRIMARY} />
+                <Ionicons
+                  name="trending-up-outline"
+                  size={18}
+                  color={PRIMARY}
+                />
               </View>
               <Text style={styles.statLabel}>الشحنات</Text>
               <Text style={styles.statValue}>—</Text>
@@ -113,7 +129,6 @@ export default function HomeScreen() {
             </View>
           </View>
         )}
-
       </ScrollView>
     </SafeAreaView>
   );
@@ -122,7 +137,7 @@ export default function HomeScreen() {
 const styles = StyleSheet.create({
   root: {
     flex: 1,
-    backgroundColor: '#f5f3f7',
+    backgroundColor: "#f5f3f7",
   },
   scroll: {
     padding: 20,
@@ -131,53 +146,53 @@ const styles = StyleSheet.create({
 
   /* Header */
   header: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
     marginBottom: 24,
   },
   headerTexts: {
-    alignItems: 'flex-end',
+    alignItems: "flex-end",
     flex: 1,
   },
   greeting: {
     fontFamily: APP_FONT_FAMILY,
     fontSize: 14,
-    color: '#aaa',
-    textAlign: 'right',
+    color: "#aaa",
+    textAlign: "right",
   },
   name: {
     fontFamily: APP_FONT_FAMILY,
     fontSize: 22,
-    fontWeight: '600',
+    fontWeight: "600",
     color: PRIMARY,
-    textAlign: 'right',
+    textAlign: "right",
   },
   avatarCircle: {
     width: 46,
     height: 46,
     borderRadius: 23,
     backgroundColor: ICON_BG,
-    alignItems: 'center',
-    justifyContent: 'center',
+    alignItems: "center",
+    justifyContent: "center",
     marginLeft: 14,
     borderWidth: 0.5,
-    borderColor: 'rgba(80,13,117,0.15)',
+    borderColor: "rgba(80,13,117,0.15)",
   },
   avatarInitial: {
     fontFamily: APP_FONT_FAMILY,
     fontSize: 18,
-    fontWeight: '600',
+    fontWeight: "600",
     color: PRIMARY,
   },
 
   /* Wallet card */
   walletCard: {
-    backgroundColor: '#fff',
+    backgroundColor: "#fff",
     borderRadius: 16,
     borderWidth: 0.5,
-    borderColor: 'rgba(80,13,117,0.1)',
-    overflow: 'hidden',
+    borderColor: "rgba(80,13,117,0.1)",
+    overflow: "hidden",
     shadowColor: PRIMARY,
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.07,
@@ -191,11 +206,11 @@ const styles = StyleSheet.create({
   },
   walletBody: {
     padding: 20,
-    alignItems: 'flex-end',
+    alignItems: "flex-end",
   },
   walletLabelRow: {
-    flexDirection: 'row-reverse',
-    alignItems: 'center',
+    flexDirection: "row-reverse",
+    alignItems: "center",
     gap: 8,
     marginBottom: 16,
   },
@@ -204,79 +219,79 @@ const styles = StyleSheet.create({
     height: 30,
     borderRadius: 8,
     backgroundColor: ICON_BG,
-    alignItems: 'center',
-    justifyContent: 'center',
+    alignItems: "center",
+    justifyContent: "center",
   },
   walletLabel: {
     fontFamily: APP_FONT_FAMILY,
     fontSize: 14,
-    color: '#888',
-    textAlign: 'right',
+    color: "#888",
+    textAlign: "right",
   },
   walletAmount: {
     fontFamily: APP_FONT_FAMILY,
     fontSize: 42,
-    fontWeight: '600',
+    fontWeight: "600",
     color: PRIMARY,
-    textAlign: 'right',
+    textAlign: "right",
     lineHeight: 52,
   },
   walletCurrency: {
     fontFamily: APP_FONT_FAMILY,
     fontSize: 13,
-    color: '#aaa',
-    textAlign: 'right',
+    color: "#aaa",
+    textAlign: "right",
     marginTop: 2,
   },
   walletDivider: {
     height: 0.5,
-    backgroundColor: 'rgba(80,13,117,0.1)',
-    width: '100%',
+    backgroundColor: "rgba(80,13,117,0.1)",
+    width: "100%",
     marginVertical: 16,
   },
   ownerRow: {
-    flexDirection: 'row-reverse',
-    alignItems: 'center',
+    flexDirection: "row-reverse",
+    alignItems: "center",
     gap: 10,
-    width: '100%',
+    width: "100%",
   },
   ownerAvatarSmall: {
     width: 28,
     height: 28,
     borderRadius: 14,
     backgroundColor: ICON_BG,
-    alignItems: 'center',
-    justifyContent: 'center',
+    alignItems: "center",
+    justifyContent: "center",
   },
   ownerTexts: {
-    alignItems: 'flex-end',
+    alignItems: "flex-end",
   },
   ownerLabel: {
     fontFamily: APP_FONT_FAMILY,
     fontSize: 11,
-    color: '#bbb',
-    textAlign: 'right',
+    color: "#bbb",
+    textAlign: "right",
   },
   ownerName: {
     fontFamily: APP_FONT_FAMILY,
     fontSize: 14,
-    fontWeight: '500',
-    color: '#333',
-    textAlign: 'right',
+    fontWeight: "500",
+    color: "#333",
+    textAlign: "right",
   },
 
   /* No data */
   noDataWrap: {
-    alignItems: 'center',
+    alignItems: "center",
     paddingVertical: 20,
     gap: 10,
-    width: '100%',
+    width: "100%",
   },
   noDataText: {
     fontFamily: APP_FONT_FAMILY,
     fontSize: 14,
-    color: '#bbb',
-    textAlign: 'center',
+    color: "#bbb",
+    textAlign: "center",
   },
 
   /* Loader */
@@ -286,17 +301,17 @@ const styles = StyleSheet.create({
 
   /* Stats row */
   statsRow: {
-    flexDirection: 'row',
+    flexDirection: "row",
     gap: 10,
   },
   statCard: {
     flex: 1,
-    backgroundColor: '#fff',
+    backgroundColor: "#fff",
     borderRadius: 12,
     padding: 14,
-    alignItems: 'flex-end',
+    alignItems: "flex-end",
     borderWidth: 0.5,
-    borderColor: 'rgba(80,13,117,0.08)',
+    borderColor: "rgba(80,13,117,0.08)",
     shadowColor: PRIMARY,
     shadowOffset: { width: 0, height: 1 },
     shadowOpacity: 0.04,
@@ -308,22 +323,22 @@ const styles = StyleSheet.create({
     height: 34,
     borderRadius: 9,
     backgroundColor: ICON_BG,
-    alignItems: 'center',
-    justifyContent: 'center',
+    alignItems: "center",
+    justifyContent: "center",
     marginBottom: 8,
   },
   statLabel: {
     fontFamily: APP_FONT_FAMILY,
     fontSize: 11,
-    color: '#aaa',
-    textAlign: 'right',
+    color: "#aaa",
+    textAlign: "right",
     marginBottom: 3,
   },
   statValue: {
     fontFamily: APP_FONT_FAMILY,
     fontSize: 16,
-    fontWeight: '500',
+    fontWeight: "500",
     color: PRIMARY,
-    textAlign: 'right',
+    textAlign: "right",
   },
 });

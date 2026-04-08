@@ -11,7 +11,6 @@ import {
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 import APP_FONT_FAMILY from "@/components/styles/font";
-import { Colors } from "@/constants/theme";
 
 type TabItem = {
   name: string;
@@ -19,8 +18,6 @@ type TabItem = {
   icon: React.ComponentProps<typeof Ionicons>["name"];
   iconFocused: React.ComponentProps<typeof Ionicons>["name"];
 };
-
-
 
 function AnimatedTabIcon({
   focused,
@@ -58,13 +55,13 @@ function AnimatedTabIcon({
       <Ionicons
         name={focused ? iconFocused : icon}
         size={24}
-        color={focused ? Colors.light.background : Colors.light.tabIconDefault}
+        color={focused ? "#ffffff" : "rgba(255,255,255,0.6)"} // الأيقونة النشطة بيضاء، غير النشطة برتقالي فاتح
       />
 
       <Animated.Text
         style={[
           styles.tabLabel,
-          { color: focused ? Colors.light.background : Colors.light.tabIconDefault },
+          { color: focused ? "#ffffff" : "rgba(255,255,255,0.6)" },
         ]}
       >
         {label}
@@ -97,7 +94,7 @@ function FloatingHomeButton({
           { transform: [{ scale }] },
         ]}
       >
-        <Ionicons name="home" size={30} color={Colors.light.background} />
+        <Ionicons name="home" size={30} color="#ffffff" />
       </Animated.View>
     </TouchableOpacity>
   );
@@ -164,13 +161,13 @@ const styles = StyleSheet.create({
     position: "relative",
     alignItems: "center",
     paddingHorizontal: 16,
-    backgroundColor: "transparent",
+    backgroundColor: "#ffffff", // لتفادي اختفاء البار
   },
 
   bar: {
     flexDirection: "row",
     alignItems: "center",
-    backgroundColor: Colors.light.primary,
+    backgroundColor: "#0f83b0", // أزرق غامق
     borderRadius: 28,
     height: 70,
     width: "100%",
@@ -178,7 +175,7 @@ const styles = StyleSheet.create({
 
     ...Platform.select({
       ios: {
-        shadowColor: Colors.light.primary,
+        shadowColor: "#0f83b0",
         shadowOffset: { width: 0, height: 8 },
         shadowOpacity: 0.35,
         shadowRadius: 16,
@@ -213,15 +210,15 @@ const styles = StyleSheet.create({
     width: 64,
     height: 64,
     borderRadius: 32,
-    backgroundColor: Colors.light.secondary,
+    backgroundColor: "#ea7b25", // برتقالي غامق
     alignItems: "center",
     justifyContent: "center",
     borderWidth: 4,
-    borderColor: Colors.light.primary,
+    borderColor: "#fab01f", // برتقالي فاتح
 
     ...Platform.select({
       ios: {
-        shadowColor: Colors.light.secondary,
+        shadowColor: "#ea7b25",
         shadowOffset: { width: 0, height: 6 },
         shadowOpacity: 0.4,
         shadowRadius: 10,
