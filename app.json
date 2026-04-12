@@ -1,4 +1,3 @@
-
 {
   "expo": {
     "name": "TROPIC SUPERVISOR",
@@ -53,9 +52,11 @@
       "expo-font"
     ],
     "extra": {
+      "router": {},
       "eas": {
-        "projectId": "40b8a479-53b0-4b1c-9467-a133b35ce14a"
+        "projectId": "4a1fa7f0-9222-4d2b-bbb3-92b2987daf66"
       }
-    }
+    },
+    "owner": "master_vision_apps"
   }
 }

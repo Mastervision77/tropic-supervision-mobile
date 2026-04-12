@@ -8,7 +8,6 @@ import { useFonts } from "expo-font";
 import { Stack } from "expo-router";
 import * as SplashScreen from "expo-splash-screen";
 import { StatusBar } from "expo-status-bar";
-import * as Updates from "expo-updates";
 import { useEffect } from "react";
 import { I18nManager } from "react-native";
 import "react-native-reanimated";
@@ -16,12 +15,6 @@ import "react-native-reanimated";
 import { useColorScheme } from "@/hooks/use-color-scheme";
 import { AuthProvider } from "@/hooks/useAuth";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-
-if (!I18nManager.isRTL) {
-  I18nManager.allowRTL(false);
-  I18nManager.forceRTL(false);
-  Updates.reloadAsync().catch(() => {});
-}
 
 SplashScreen.preventAutoHideAsync();
 
@@ -54,19 +47,29 @@ const queryClient = new QueryClient({
   },
 });
 
+// 👈 RTL Configuration
+I18nManager.forceRTL(true);
+I18nManager.allowRTL(true);
+
 export default function RootLayout() {
   const colorScheme = useColorScheme();
-
   const [loaded] = useFonts({
     Cairo_700Bold,
   });
 
+  // 👈 كل الـ Hooks لازم يكونوا قبل أي return
   useEffect(() => {
     if (loaded) {
       SplashScreen.hideAsync();
     }
   }, [loaded]);
 
+  useEffect(() => {
+    I18nManager.forceRTL(false);
+    I18nManager.allowRTL(false);
+  }, []);
+
+  // 👈 الـ return المبكر بعد كل الـ Hooks
   if (!loaded) {
     return null;
   }
