@@ -7,7 +7,7 @@ import { ItineraryDetail } from "./types";
 
 const PRIMARY = Colors.light.secondary;
 
-const ICON_BG = Colors.light.primary;
+// const ICON_BG = Colors.light.primary;
 
 interface Props {
   itinerary: ItineraryDetail;
@@ -16,38 +16,36 @@ interface Props {
 
 const ItineraryHeader = React.memo(({ itinerary }: Props) => (
   <View style={styles.card}>
-    {/* Accent */}
     <View style={styles.cardAccent} />
 
     <View style={styles.body}>
-      {/* Title */}
       <Text style={styles.name}>{itinerary.name}</Text>
 
-      {/* Description */}
       {itinerary.description ? (
         <Text style={styles.description}>{itinerary.description}</Text>
       ) : null}
 
-      {/* Divider */}
+     
       <View style={styles.divider} />
 
-      {/* Trip info rows */}
       <View style={styles.infoRow}>
+        <Text style={styles.infoText}>{itinerary.program_trip.program}</Text>
         <View style={styles.infoIconWrap}>
           <Ionicons name="briefcase-outline" size={14} color={PRIMARY} />
         </View>
-        <Text style={styles.infoText}>{itinerary.program_trip.program}</Text>
+
       </View>
 
       <View style={styles.infoRow}>
-        <View style={styles.infoIconWrap}>
-          <Ionicons name="calendar-outline" size={14} color={PRIMARY} />
-        </View>
+
         <Text style={styles.infoText}>
           {itinerary.program_trip.travel_date}
           {"  ←  "}
           {itinerary.program_trip.return_date}
         </Text>
+        <View style={styles.infoIconWrap}>
+          <Ionicons name="calendar-outline" size={14} color={PRIMARY} />
+        </View>
       </View>
     </View>
   </View>
@@ -68,6 +66,7 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.06,
     shadowRadius: 8,
     elevation: 3,
+
   },
   cardAccent: {
     height: 4,
@@ -81,14 +80,16 @@ const styles = StyleSheet.create({
     fontSize: 19,
     fontWeight: "600",
     color: PRIMARY,
-    textAlign: "right",
+    textAlign: "left",
     marginBottom: 6,
+    // alignItems: "flex-end",
+
   },
   description: {
     fontFamily: APP_FONT_FAMILY,
     fontSize: 13,
     color: "#888",
-    textAlign: "right",
+    textAlign: "left",
     lineHeight: 20,
     marginBottom: 4,
   },
@@ -98,7 +99,7 @@ const styles = StyleSheet.create({
     marginVertical: 12,
   },
   infoRow: {
-    flexDirection: "row-reverse",
+    flexDirection: "row",
     alignItems: "center",
     gap: 8,
     marginBottom: 8,
@@ -115,7 +116,8 @@ const styles = StyleSheet.create({
     fontFamily: APP_FONT_FAMILY,
     fontSize: 13,
     color: "#555",
-    textAlign: "right",
+    textAlign: "left",
     flex: 1,
+
   },
 });

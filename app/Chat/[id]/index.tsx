@@ -207,7 +207,7 @@ function EmployeeSelectModal({
                 name="chatbubble-ellipses-outline"
                 size={18}
                 color="#fff"
-                style={{ marginLeft: 8 }}
+                style={{ marginStart: 8 }}
               />
               <Text style={styles.chatBtnText}>محادثة</Text>
             </>
@@ -317,7 +317,7 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
   },
   headerTexts: {
-    alignItems: "flex-end",
+    alignItems: "flex-start",
   },
   headerSub: {
     color: "rgba(255,255,255,0.6)",
@@ -333,7 +333,7 @@ const styles = StyleSheet.create({
     backgroundColor: "rgba(255,255,255,0.15)",
     alignItems: "center",
     justifyContent: "center",
-    alignSelf: "flex-end",
+    alignSelf: "flex-start",
   },
 
   body: {
@@ -349,7 +349,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#fff",
     borderRadius: 14,
     padding: 14,
-    flexDirection: "row-reverse",
+    flexDirection: "row",
     alignItems: "center",
     gap: 12,
     borderWidth: 0.5,
@@ -385,7 +385,7 @@ const styles = StyleSheet.create({
     gap: 5,
   },
   chatTopRow: {
-    flexDirection: "row",
+    flexDirection: "row-reverse",
     justifyContent: "space-between",
     alignItems: "center",
   },
@@ -411,7 +411,7 @@ const styles = StyleSheet.create({
     fontSize: 13,
     color: "#888",
     fontFamily: APP_FONT_FAMILY,
-    textAlign: "right",
+    textAlign: "left",
   },
   sentIcon: {
     flexShrink: 0,
@@ -467,7 +467,7 @@ const styles = StyleSheet.create({
     paddingBottom: 34,
   },
   modalHeader: {
-    flexDirection: "row",
+    flexDirection: "row-reverse",
     justifyContent: "space-between",
     alignItems: "center",
     marginBottom: 16,
@@ -478,7 +478,7 @@ const styles = StyleSheet.create({
   },
 
   employeeRow: {
-    flexDirection: "row",
+    flexDirection: "row-reverse",
     alignItems: "center",
     paddingVertical: 11,
     paddingHorizontal: 12,
@@ -498,7 +498,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#e0e0e0",
     alignItems: "center",
     justifyContent: "center",
-    marginLeft: 12,
+    marginStart: 12,
     flexShrink: 0,
   },
   empAvatarSelected: {
@@ -534,7 +534,7 @@ const styles = StyleSheet.create({
     paddingVertical: 14,
     alignItems: "center",
     justifyContent: "center",
-    flexDirection: "row",
+    flexDirection: "row-reverse",
   },
   chatBtnDisabled: {
     backgroundColor: "#c0a0d8",

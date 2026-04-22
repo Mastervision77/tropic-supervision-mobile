@@ -1,10 +1,10 @@
 import {
-    ActivityIndicator,
-    ScrollView,
-    StyleSheet,
-    Text,
-    TouchableOpacity,
-    View,
+  ActivityIndicator,
+  ScrollView,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
 } from "react-native";
 
 import APP_FONT_FAMILY from "@/components/styles/font";
@@ -186,7 +186,7 @@ const styles = StyleSheet.create({
   },
   expenditureBadge: {
     marginTop: 5,
-    alignSelf: "flex-end",
+    alignSelf: "flex-start",
     backgroundColor: ICON_BG,
     paddingHorizontal: 8,
     paddingVertical: 2,
@@ -199,7 +199,7 @@ const styles = StyleSheet.create({
     fontWeight: "500",
   },
   headerRow: {
-    flexDirection: "row",
+    flexDirection: "row-reverse",
     justifyContent: "space-between",
     alignItems: "flex-end",
   },
@@ -221,14 +221,14 @@ const styles = StyleSheet.create({
     textAlign: "right",
   },
   spendBtn: {
-    flexDirection: "row",
+    flexDirection: "row-reverse",
     alignItems: "center",
     gap: 6,
     backgroundColor: "#fff",
     paddingHorizontal: 14,
     paddingVertical: 9,
     borderRadius: 12,
-    alignSelf: "flex-end",
+    alignSelf: "flex-start",
   },
   spendBtnText: {
     color: PRIMARY,
@@ -253,8 +253,8 @@ const styles = StyleSheet.create({
     zIndex: 10,
   },
   totalsRow: {
-    flexDirection: "row",
-    alignItems: "flex-start",
+    flexDirection: "row-reverse",
+    alignItems: "flex-end",
   },
   totalColumn: {
     flex: 1,
@@ -284,7 +284,7 @@ const styles = StyleSheet.create({
     marginTop: 16,
   },
   progressLabels: {
-    flexDirection: "row",
+    flexDirection: "row-reverse",
     justifyContent: "space-between",
     marginBottom: 6,
   },
@@ -325,6 +325,7 @@ const styles = StyleSheet.create({
     textAlign: "right",
     marginBottom: 12,
     fontFamily: APP_FONT_FAMILY,
+    alignSelf: "flex-start",
   },
 
   transactionItem: {
@@ -334,7 +335,7 @@ const styles = StyleSheet.create({
     marginBottom: 10,
     borderWidth: 0.5,
     borderColor: "rgba(0,0,0,0.06)",
-    flexDirection: "row-reverse", // 👈 عكسنا الاتجاه
+    flexDirection: "row", // 👈 عكسنا الاتجاه
     alignItems: "center",
   },
   iconContainer: {
@@ -344,19 +345,19 @@ const styles = StyleSheet.create({
     backgroundColor: ICON_BG,
     alignItems: "center",
     justifyContent: "center",
-    marginRight: 12, // 👈 كان marginLeft
+    marginRight: 12, // 👈 كان marginStart
     flexShrink: 0,
   },
   transactionAmount: {
     fontSize: 16,
     fontWeight: "500",
     color: "#c0392b",
-    marginLeft: 12, // 👈 كان marginRight
+    marginStart: 12, // 👈 كان marginRight
     fontFamily: APP_FONT_FAMILY,
   },
   transactionDetails: {
     flex: 1,
-    alignItems: "flex-end",
+    alignItems: "flex-start",
   },
   transactionDescription: {
     fontSize: 14,

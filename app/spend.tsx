@@ -15,11 +15,11 @@ import {
 import { SafeAreaView } from "react-native-safe-area-context";
 
 import APP_FONT_FAMILY from "@/components/styles/font";
+import { Colors } from "@/constants/theme";
 import { useAuth } from "@/hooks/useAuth";
 import useFetch from "@/hooks/useFetch";
 import { useMutate } from "@/hooks/useMutate";
 import { useQueryClient } from "@tanstack/react-query";
-import { Colors } from "@/constants/theme";
 
 const PRIMARY = Colors.light.secondary;
 const ICON_BG = Colors.light.primary;
@@ -364,7 +364,7 @@ export default function SpendScreen() {
                   name="checkmark-circle-outline"
                   size={20}
                   color="#fff"
-                  style={{ marginLeft: 8 }}
+                  style={{ marginStart: 8 }}
                 />
                 <Text style={styles.submitText}>تأكيد الصرف</Text>
               </View>
@@ -376,7 +376,6 @@ export default function SpendScreen() {
   );
 }
 
-/* ─── Styles ─────────────────────────────────────────────── */
 const styles = StyleSheet.create({
   root: { flex: 1, backgroundColor: PRIMARY },
 
@@ -385,7 +384,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
     paddingTop: 12,
     paddingBottom: 20,
-    flexDirection: "row-reverse",
+    flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-between",
   },
@@ -422,7 +421,7 @@ const styles = StyleSheet.create({
   },
 
   sectionLabel: {
-    flexDirection: "row-reverse",
+    flexDirection: "row",
     alignItems: "center",
     gap: 8,
     marginBottom: 14,
@@ -441,9 +440,11 @@ const styles = StyleSheet.create({
     fontWeight: "500",
     color: "#1a1a1a",
     textAlign: "right",
+    alignItems: "flex-start",
+
   },
 
-  /* Itinerary — radio style */
+
   selectGrid: { gap: 8 },
   selectItem: {
     borderWidth: 1,
@@ -483,14 +484,14 @@ const styles = StyleSheet.create({
     fontFamily: APP_FONT_FAMILY,
     fontSize: 14,
     color: "#444",
-    textAlign: "right",
+    textAlign: "left",
+    alignItems: "flex-start",
     flex: 1,
   },
   selectItemTextActive: { color: PRIMARY, fontWeight: "500" },
 
-  /* Expenditure — chip style */
   expGrid: {
-    flexDirection: "row-reverse",
+    flexDirection: "row",
     flexWrap: "wrap",
     gap: 8,
   },
@@ -513,14 +514,14 @@ const styles = StyleSheet.create({
     fontFamily: APP_FONT_FAMILY,
     fontSize: 13,
     color: "#555",
-    textAlign: "right",
+    textAlign: "left",
   },
   expItemTextActive: { color: PRIMARY, fontWeight: "500" },
   expItemSub: {
     fontFamily: APP_FONT_FAMILY,
     fontSize: 11,
     color: "#aaa",
-    textAlign: "right",
+    textAlign: "left",
     marginTop: 2,
   },
   expItemSubActive: { color: "rgba(80,13,117,0.55)" },

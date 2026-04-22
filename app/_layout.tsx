@@ -11,7 +11,7 @@ import { StatusBar } from "expo-status-bar";
 import { useEffect } from "react";
 import { I18nManager } from "react-native";
 import "react-native-reanimated";
-
+import "../localization/i18n";
 import { useColorScheme } from "@/hooks/use-color-scheme";
 import { AuthProvider } from "@/hooks/useAuth";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
@@ -47,9 +47,7 @@ const queryClient = new QueryClient({
   },
 });
 
-// 👈 RTL Configuration
-I18nManager.forceRTL(true);
-I18nManager.allowRTL(true);
+
 
 export default function RootLayout() {
   const colorScheme = useColorScheme();
@@ -57,17 +55,13 @@ export default function RootLayout() {
     Cairo_700Bold,
   });
 
-  // 👈 كل الـ Hooks لازم يكونوا قبل أي return
   useEffect(() => {
     if (loaded) {
       SplashScreen.hideAsync();
     }
   }, [loaded]);
 
-  useEffect(() => {
-    I18nManager.forceRTL(false);
-    I18nManager.allowRTL(false);
-  }, []);
+
 
   // 👈 الـ return المبكر بعد كل الـ Hooks
   if (!loaded) {

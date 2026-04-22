@@ -51,56 +51,56 @@ const ItineraryCard = React.memo(
   }) => (
     <View style={styles.card}>
       <View style={styles.cardAccent} />
-
       <View style={styles.cardBody}>
         <View style={styles.cardHeader}>
           <View style={styles.expenseBadge}>
-            <Text style={styles.expenseText}>
+            <Text style={styles.cardTitle}>{item.name}</Text>
+          </View>
+          
+          <Text style={styles.expenseText}>
               {Number(item.total_expenses).toLocaleString("en-US")} SAR
             </Text>
+        </View>
+
+          {item.description ? (
+            <Text style={styles.cardDescription}>{item.description}</Text>
+          ) : null}
+
+          {item.employees?.length > 0 && (
+            <>
+              <Text style={styles.employeesLabel}>الموظفون</Text>
+              <View style={styles.employeesRow}>
+                {item.employees.map((emp) => (
+                  <View key={emp.id} style={styles.employeePill}>
+                    <Text style={styles.employeePillText}>{emp.name}</Text>
+                  </View>
+                ))}
+              </View>
+            </>
+          )}
+
+          <View style={styles.actionsRow}>
+            <TouchableOpacity
+              style={styles.chatButton}
+              onPress={() => onOpenChat(item.id)}
+              activeOpacity={0.8}
+            >
+              <Ionicons
+                name="chatbubble-ellipses-outline"
+                size={20}
+                color={PRIMARY}
+              />
+            </TouchableOpacity>
+
+            <TouchableOpacity
+              style={styles.tasksButton}
+              onPress={() => onShowTasks(item.id)}
+              activeOpacity={0.8}
+            >
+              <Text style={styles.tasksButtonText}>عرض المهام</Text>
+            </TouchableOpacity>
           </View>
-          <Text style={styles.cardTitle}>{item.name}</Text>
         </View>
-
-        {item.description ? (
-          <Text style={styles.cardDescription}>{item.description}</Text>
-        ) : null}
-
-        {item.employees?.length > 0 && (
-          <>
-            <Text style={styles.employeesLabel}>الموظفون</Text>
-            <View style={styles.employeesRow}>
-              {item.employees.map((emp) => (
-                <View key={emp.id} style={styles.employeePill}>
-                  <Text style={styles.employeePillText}>{emp.name}</Text>
-                </View>
-              ))}
-            </View>
-          </>
-        )}
-
-        <View style={styles.actionsRow}>
-          <TouchableOpacity
-            style={styles.chatButton}
-            onPress={() => onOpenChat(item.id)}
-            activeOpacity={0.8}
-          >
-            <Ionicons
-              name="chatbubble-ellipses-outline"
-              size={20}
-              color={PRIMARY}
-            />
-          </TouchableOpacity>
-
-          <TouchableOpacity
-            style={styles.tasksButton}
-            onPress={() => onShowTasks(item.id)}
-            activeOpacity={0.8}
-          >
-            <Text style={styles.tasksButtonText}>عرض المهام</Text>
-          </TouchableOpacity>
-        </View>
-      </View>
     </View>
   ),
 );
@@ -183,7 +183,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
     paddingTop: 10,
     paddingBottom: 48,
-    alignItems: "flex-end",
+    alignItems: "flex-start",
   },
   headerSub: {
     color: "rgba(255,255,255,0.6)",
@@ -244,7 +244,7 @@ const styles = StyleSheet.create({
     fontFamily: APP_FONT_FAMILY,
     textAlign: "right",
     flex: 1,
-    marginLeft: 10,
+    marginStart: 10,
   },
   expenseBadge: {
     backgroundColor: ICON_BG,
@@ -264,7 +264,7 @@ const styles = StyleSheet.create({
     fontSize: 13,
     color: "#888",
     fontFamily: APP_FONT_FAMILY,
-    textAlign: "right",
+    textAlign: "left",
     marginBottom: 12,
     lineHeight: 20,
   },
@@ -273,11 +273,12 @@ const styles = StyleSheet.create({
     fontSize: 12,
     color: "#aaa",
     fontFamily: APP_FONT_FAMILY,
-    textAlign: "right",
+    textAlign: "left",
     marginBottom: 6,
+    alignItems:"flex-end",
   },
   employeesRow: {
-    flexDirection: "row-reverse",
+    flexDirection: "row",
     flexWrap: "wrap",
     gap: 6,
     marginBottom: 14,
@@ -295,7 +296,7 @@ const styles = StyleSheet.create({
   },
 
   actionsRow: {
-    flexDirection: "row",
+    flexDirection: "row-reverse",
     alignItems: "center",
     gap: 10,
   },

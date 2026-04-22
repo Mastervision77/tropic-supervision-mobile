@@ -41,10 +41,10 @@ const DayCard = React.memo(({ day, theme }: Props) => {
 
   return (
     <View style={styles.card}>
-      {/* Accent bar */}
+     
       <View style={styles.cardAccent} />
 
-      {/* Header — always visible */}
+     
       <TouchableOpacity
         style={styles.header}
         onPress={toggle}
@@ -57,24 +57,24 @@ const DayCard = React.memo(({ day, theme }: Props) => {
             color="rgba(255,255,255,0.75)"
           />
         </View>
-        <View style={styles.headerRight}>
+        <View style={styles.headerleft}>
           <Text style={styles.dayNumber}>اليوم {day.day_number}</Text>
           <Text style={styles.dayDate}>{day.day_date}</Text>
         </View>
       </TouchableOpacity>
 
-      {/* Collapsible content */}
+      
       {expanded && (
         <View style={styles.content}>
-          {/* Title */}
+          
           <Text style={styles.title}>{day.title}</Text>
 
-          {/* Description */}
+          
           {day.description ? (
             <Text style={styles.description}>{day.description}</Text>
           ) : null}
 
-          {/* Attachments */}
+         
           {day.attachments.length > 0 && (
             <View style={styles.section}>
               <View style={styles.sectionLabelRow}>
@@ -93,7 +93,7 @@ const DayCard = React.memo(({ day, theme }: Props) => {
             </View>
           )}
 
-          {/* Tasks */}
+          
           {day.tasks.length > 0 && (
             <View style={styles.section}>
               <View style={styles.sectionLabelRow}>
@@ -142,7 +142,7 @@ const styles = StyleSheet.create({
     paddingVertical: 14,
     backgroundColor: PRIMARY,
   },
-  headerRight: {
+  headerleft: {
     alignItems: "flex-end",
     gap: 2,
   },
@@ -154,13 +154,13 @@ const styles = StyleSheet.create({
     fontSize: 15,
     fontWeight: "600",
     color: "#fff",
-    textAlign: "right",
+    textAlign: "left",
   },
   dayDate: {
     fontFamily: APP_FONT_FAMILY,
     fontSize: 12,
     color: "rgba(255,255,255,0.7)",
-    textAlign: "right",
+    textAlign: "left",
   },
   content: {
     padding: 16,
@@ -170,13 +170,13 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: "500",
     color: PRIMARY,
-    textAlign: "right",
+    textAlign: "left",
     marginBottom: 6,
   },
   description: {
     fontFamily: APP_FONT_FAMILY,
     fontSize: 14,
-    textAlign: "right",
+    textAlign: "left",
     color: "#888",
     lineHeight: 21,
     marginBottom: 4,
@@ -185,7 +185,7 @@ const styles = StyleSheet.create({
     marginTop: 14,
   },
   sectionLabelRow: {
-    flexDirection: "row-reverse",
+    flexDirection: "row",
     alignItems: "center",
     gap: 6,
     marginBottom: 10,
@@ -195,14 +195,14 @@ const styles = StyleSheet.create({
     fontSize: 13,
     fontWeight: "500",
     color: PRIMARY,
-    textAlign: "right",
+    textAlign: "left",
   },
   taskCountBadge: {
     backgroundColor: "#f0e8f5",
     borderRadius: 99,
     paddingHorizontal: 7,
     paddingVertical: 1,
-    marginRight: 4,
+    // marginleft: 4,
   },
   taskCountText: {
     fontSize: 11,

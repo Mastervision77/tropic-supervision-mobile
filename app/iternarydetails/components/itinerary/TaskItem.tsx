@@ -108,7 +108,7 @@ const AddComment = React.memo(
           value={text}
           onChangeText={setText}
           multiline
-          textAlign="right"
+          textAlign="left"
           returnKeyType="send"
           onSubmitEditing={submit}
         />
@@ -179,7 +179,6 @@ const CommentsSection = React.memo(
   },
 );
 
-// ── TaskItem ───────────────────────────────────────────────────────────────────
 const TaskItem = React.memo(({ task, theme }: Props) => {
   const { user } = useAuth() as any;
   const employeeId = (user as any)?.employee?.id;
@@ -233,7 +232,6 @@ const TaskItem = React.memo(({ task, theme }: Props) => {
 
   return (
     <View style={styles.card}>
-      {/* ── Header ── */}
       <View style={styles.cardHeader}>
         <View style={styles.taskMeta}>
           <Text style={styles.taskName}>{task.name}</Text>
@@ -241,12 +239,10 @@ const TaskItem = React.memo(({ task, theme }: Props) => {
         </View>
       </View>
 
-      {/* ── Description ── */}
       {task.description ? (
         <Text style={styles.taskDescription}>{task.description}</Text>
       ) : null}
 
-      {/* ── Comment count ── */}
       {commentCount > 0 && (
         <TouchableOpacity
           onPress={toggleComments}
@@ -349,7 +345,7 @@ const styles = StyleSheet.create({
 
   /* Header */
   cardHeader: {
-    flexDirection: "row-reverse",
+    flexDirection: "row",
     alignItems: "center",
     paddingHorizontal: 14,
     paddingTop: 14,
@@ -357,20 +353,20 @@ const styles = StyleSheet.create({
   },
   taskMeta: {
     flex: 1,
-    alignItems: "flex-end",
+    alignItems: "flex-start",
   },
   taskName: {
     fontFamily: APP_FONT_FAMILY,
     fontSize: 15,
     fontWeight: "500",
     color: PRIMARY,
-    textAlign: "right",
+    textAlign: "left",
   },
   taskDate: {
     fontFamily: APP_FONT_FAMILY,
     fontSize: 11,
     color: "#aaa",
-    textAlign: "right",
+    textAlign: "left",
     marginTop: 3,
   },
 
@@ -379,7 +375,7 @@ const styles = StyleSheet.create({
     fontFamily: APP_FONT_FAMILY,
     fontSize: 13,
     color: "#555",
-    textAlign: "right",
+    textAlign: "left",
     lineHeight: 20,
     paddingHorizontal: 14,
     paddingBottom: 10,
@@ -475,7 +471,7 @@ commentInput: {
   paddingHorizontal: 14,
   paddingVertical: Platform.OS === "ios" ? 8 : 4,
   backgroundColor: "#faf7fc",
-  textAlign: "right",
+  textAlign: "left",
   maxHeight: 100,
   color: "#222",
 },

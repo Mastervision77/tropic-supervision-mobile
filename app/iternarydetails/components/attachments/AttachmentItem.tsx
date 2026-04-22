@@ -1,17 +1,17 @@
 // components/attachments/AttachmentItem.tsx
+import APP_FONT_FAMILY from '@/components/styles/font';
+import { ThemedText } from '@/components/themed-text';
 import React, { useCallback, useState } from 'react';
 import {
-  View,
-  Image,
-  TouchableOpacity,
-  Modal,
-  StyleSheet,
-  Pressable,
-  Linking,
   Alert,
+  Image,
+  Linking,
+  Modal,
+  Pressable,
+  StyleSheet,
+  TouchableOpacity,
+  View,
 } from 'react-native';
-import { ThemedText } from '@/components/themed-text';
-import APP_FONT_FAMILY from '@/components/styles/font';
 
 
 interface Attachment {
@@ -174,7 +174,7 @@ export default AttachmentItem;
 const styles = StyleSheet.create({
   // Image thumbnail
   attachmentItem: {
-    marginLeft: 10,
+    marginStart: 10,
     alignItems: 'center',
     width: 90,
   },
@@ -193,7 +193,7 @@ const styles = StyleSheet.create({
 
   // PDF thumbnail
   pdfContainer: {
-    marginLeft: 10,
+    marginStart: 10,
     width: 90,
     height: 100,
     borderRadius: 8,

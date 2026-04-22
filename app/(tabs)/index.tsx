@@ -42,11 +42,6 @@ export default function HomeScreen() {
             <Text style={styles.greeting}>مرحباً،</Text>
             <Text style={styles.name}>{user?.name || "ضيف"}</Text>
           </View>
-          <View style={styles.avatarCircle}>
-            <Text style={styles.avatarInitial}>
-              {(user?.name || "ض").charAt(0)}
-            </Text>
-          </View>
         </View>
 
         {/* ── Wallet card ── */}
@@ -79,9 +74,6 @@ export default function HomeScreen() {
 
                 {/* Owner row */}
                 <View style={styles.ownerRow}>
-                  <View style={styles.ownerAvatarSmall}>
-                    <Ionicons name="person" size={12} color={PRIMARY} />
-                  </View>
                   <View style={styles.ownerTexts}>
                     <Text style={styles.ownerLabel}>صاحب المحفظة</Text>
                     <Text style={styles.ownerName}>{wallet.employee_name}</Text>
@@ -146,13 +138,14 @@ const styles = StyleSheet.create({
 
   /* Header */
   header: {
-    flexDirection: "row",
+    flexDirection: "row-reverse",
     justifyContent: "space-between",
     alignItems: "center",
     marginBottom: 24,
+    alignSelf: "flex-start",
   },
   headerTexts: {
-    alignItems: "flex-end",
+    alignItems: "flex-start",
     flex: 1,
   },
   greeting: {
@@ -175,7 +168,7 @@ const styles = StyleSheet.create({
     backgroundColor: ICON_BG,
     alignItems: "center",
     justifyContent: "center",
-    marginLeft: 14,
+    marginStart: 14,
     borderWidth: 0.5,
     borderColor: "rgba(80,13,117,0.15)",
   },
@@ -199,6 +192,7 @@ const styles = StyleSheet.create({
     shadowRadius: 10,
     elevation: 4,
     marginBottom: 16,
+    
   },
   cardAccent: {
     height: 4,
@@ -206,7 +200,7 @@ const styles = StyleSheet.create({
   },
   walletBody: {
     padding: 20,
-    alignItems: "flex-end",
+    alignItems: "flex-start",
   },
   walletLabelRow: {
     flexDirection: "row-reverse",
@@ -250,7 +244,7 @@ const styles = StyleSheet.create({
     marginVertical: 16,
   },
   ownerRow: {
-    flexDirection: "row-reverse",
+    flexDirection: "row",
     alignItems: "center",
     gap: 10,
     width: "100%",
@@ -264,7 +258,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   ownerTexts: {
-    alignItems: "flex-end",
+    alignItems: "flex-start",
   },
   ownerLabel: {
     fontFamily: APP_FONT_FAMILY,
@@ -301,7 +295,7 @@ const styles = StyleSheet.create({
 
   /* Stats row */
   statsRow: {
-    flexDirection: "row",
+    flexDirection: "row-reverse",
     gap: 10,
   },
   statCard: {

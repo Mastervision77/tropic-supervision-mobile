@@ -91,6 +91,6 @@ export default function TasksScreen() {
 const styles = StyleSheet.create({
   container: { flex: 1 },
   center: { flex: 1, justifyContent: 'center', alignItems: 'center' },
-  errorText: { color: 'red', fontFamily: APP_FONT_FAMILY, textAlign: 'right' },
+  errorText: { color: 'red', fontFamily: APP_FONT_FAMILY, textAlign: 'left' },
   listContainer: { padding: 16, gap: 16 },
 });

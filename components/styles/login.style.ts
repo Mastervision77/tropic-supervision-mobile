@@ -1,4 +1,4 @@
-import { StyleSheet, Platform } from "react-native";
+import { StyleSheet } from "react-native";
 import { Colors, Fonts } from "../../constants/theme";
 
 const themeColors = Colors.light;
@@ -51,7 +51,7 @@ const LoginStyles = StyleSheet.create({
     color: themeColors.text,
     marginBottom: 8,
     textAlign: "right",
-    alignSelf: "flex-end",
+    alignSelf: "flex-start",
     fontFamily: APP_FONT_FAMILY,
   },
   inputContainer: {
@@ -99,7 +99,7 @@ const LoginStyles = StyleSheet.create({
     color: themeColors.text,
     marginBottom: 24,
     textAlign: "right",
-    alignSelf: "flex-end",
+   alignSelf: "flex-start",
     fontFamily: APP_FONT_FAMILY,
   },
   button: {

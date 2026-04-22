@@ -1,12 +1,12 @@
-import { Tabs } from "expo-router";
-import React, { useRef, useEffect } from "react";
 import { Ionicons } from "@expo/vector-icons";
+import { Tabs } from "expo-router";
+import React, { useEffect, useRef } from "react";
 import {
-  View,
-  TouchableOpacity,
-  StyleSheet,
   Animated,
   Platform,
+  StyleSheet,
+  TouchableOpacity,
+  View,
 } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
@@ -165,7 +165,7 @@ const styles = StyleSheet.create({
   },
 
   bar: {
-    flexDirection: "row",
+    flexDirection: "row-reverse",
     alignItems: "center",
     backgroundColor: "#0f83b0", // أزرق غامق
     borderRadius: 28,

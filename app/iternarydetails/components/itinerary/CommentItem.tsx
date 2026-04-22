@@ -1,11 +1,11 @@
 
 
 import APP_FONT_FAMILY from "@/components/styles/font";
+import { Colors } from "@/constants/theme";
 import { Ionicons } from "@expo/vector-icons";
 import React from "react";
 import { StyleSheet, Text, View } from "react-native";
 import { Comment } from "./types";
-import { Colors } from "@/constants/theme";
 
 const PRIMARY = Colors.light.secondary;
 
@@ -39,7 +39,7 @@ export default CommentItem;
 const styles = StyleSheet.create({
   container: {
     flexDirection: "row-reverse",
-    alignItems: "flex-start",
+    alignItems: "flex-end",
     gap: 8,
     marginBottom: 8,
   },
@@ -57,7 +57,7 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: "#faf7fc",
     borderRadius: 12,
-    borderTopRightRadius: 4,
+    // borderTopleftRadius: 4,
     paddingHorizontal: 12,
     paddingVertical: 8,
     borderWidth: 0.5,
@@ -67,7 +67,7 @@ const styles = StyleSheet.create({
     fontFamily: APP_FONT_FAMILY,
     fontSize: 13,
     color: "#333",
-    textAlign: "right",
+    textAlign: "left",
     lineHeight: 19,
   },
 });

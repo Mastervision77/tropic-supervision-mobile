@@ -534,7 +534,7 @@
 //               </TouchableOpacity>
 //             )}
 
-            
+
 //             {showSteps && steps.length > 0 && (
 //               <ScrollView style={styles.stepsList} nestedScrollEnabled>
 //                 {steps.map((s, i) => (
@@ -664,7 +664,7 @@
 //     alignItems: 'center',
 //     gap: 12,
 //   },
-//   navBannerIcon: { marginLeft: 4 },
+//   navBannerIcon: { marginStart: 4 },
 //   navBannerText: { flex: 1, alignItems: 'flex-end' },
 //   navInstruction: {
 //     fontFamily: APP_FONT_FAMILY,
@@ -838,31 +838,31 @@
 //   },
 //   stopBtnText: { fontFamily: APP_FONT_FAMILY, fontSize: 15, fontWeight: '600' },
 // });
+import APP_FONT_FAMILY from '@/components/styles/font';
+import { ThemedText } from '@/components/themed-text';
+import { Ionicons, MaterialCommunityIcons } from '@expo/vector-icons';
+import * as Location from 'expo-location';
+import * as Speech from 'expo-speech';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import {
-  View,
+  ActivityIndicator,
+  Dimensions,
+  Linking,
+  Modal,
+  Platform,
+  ScrollView,
+  StatusBar,
   StyleSheet,
   TouchableOpacity,
-  Modal,
-  ActivityIndicator,
-  Linking,
-  Platform,
-  StatusBar,
-  Dimensions,
-  ScrollView,
+  View,
 } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
 import MapView, {
+  Camera,
   Marker,
   Polyline,
   PROVIDER_GOOGLE,
-  Camera,
 } from 'react-native-maps';
-import * as Location from 'expo-location';
-import * as Speech from 'expo-speech';
-import { ThemedText } from '@/components/themed-text';
-import APP_FONT_FAMILY from '@/components/styles/font';
-import { Ionicons, MaterialCommunityIcons, FontAwesome5 } from '@expo/vector-icons';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 const GOOGLE_MAPS_API_KEY = process.env.EXPO_PUBLIC_GOOGLE_MAP_KEY;
 const { width, height } = Dimensions.get('window');
@@ -1492,7 +1492,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     gap: 12,
   },
-  navBannerIcon: { marginLeft: 4 },
+  navBannerIcon: { marginStart: 4 },
   navBannerText: { flex: 1, alignItems: 'flex-end' },
   navInstruction: {
     fontFamily: APP_FONT_FAMILY,
