@@ -8,13 +8,15 @@ import { useFonts } from "expo-font";
 import { Stack } from "expo-router";
 import * as SplashScreen from "expo-splash-screen";
 import { StatusBar } from "expo-status-bar";
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import { I18nManager } from "react-native";
 import "react-native-reanimated";
 import "../localization/i18n";
 import { useColorScheme } from "@/hooks/use-color-scheme";
-import { AuthProvider } from "@/hooks/useAuth";
+import { AuthProvider, useAuth } from "@/hooks/useAuth";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { useNotifications } from "@/hooks/useNotifications";
+import { useMutate } from "@/hooks/useMutate";
 
 SplashScreen.preventAutoHideAsync();
 
@@ -47,7 +49,49 @@ const queryClient = new QueryClient({
   },
 });
 
+function AppInitializer() {
+  const { token } = useAuth();
+  const { registerForPushNotifications } = useNotifications();
+  const hasRegistered = useRef(false);
 
+  const { mutate: registerDeviceToken } = useMutate({
+    endpoint: "device-tokens",
+    mutationKey: ["device-tokens"],
+    onSuccess: (data) => {
+      console.log("Push token registered successfully!", data);
+    },
+    onError: (err) => {
+      console.error("Push token error:", err);
+      hasRegistered.current = false; 
+    },
+  });
+
+  useEffect(() => {
+    if (!token || hasRegistered.current) return;
+
+    const register = async () => {
+      hasRegistered.current = true;
+
+      const fcmToken = await registerForPushNotifications();
+      console.log("FCM Token:", fcmToken);
+
+      if (!fcmToken) {
+        hasRegistered.current = false;
+        return;
+      }
+
+      registerDeviceToken({
+        token: fcmToken,
+        platform: "android",
+        device_name: "My Android Phone",
+      });
+    };
+
+    register();
+  }, [token]);
+
+  return null;
+}
 
 export default function RootLayout() {
   const colorScheme = useColorScheme();
@@ -71,6 +115,7 @@ export default function RootLayout() {
   return (
     <QueryClientProvider client={queryClient}>
       <AuthProvider>
+        <AppInitializer />
         <ThemeProvider
           value={colorScheme === "dark" ? customDarkTheme : customLightTheme}
         >

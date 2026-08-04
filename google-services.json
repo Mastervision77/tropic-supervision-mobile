@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "511091434591",
+    "project_id": "azzka-supervisor",
+    "storage_bucket": "azzka-supervisor.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:511091434591:android:0c632a2d7dc92c58afe7ea",
+        "android_client_info": {
+          "package_name": "com.azzka.supervisor"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDHAuJwkFuxr1m1OYnXCSAlvDIAbBZWWr4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:511091434591:android:3e368653200b366dafe7ea",
+        "android_client_info": {
+          "package_name": "com.supervisor.app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDHAuJwkFuxr1m1OYnXCSAlvDIAbBZWWr4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

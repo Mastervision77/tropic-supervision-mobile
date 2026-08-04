@@ -3,12 +3,14 @@ import { Colors } from "@/constants/theme";
 import { useAuth } from "@/hooks/useAuth";
 import useFetch from "@/hooks/useFetch";
 import { Ionicons } from "@expo/vector-icons";
+import { useRouter } from "expo-router";
 import React from "react";
 import {
   ActivityIndicator,
   ScrollView,
   StyleSheet,
   Text,
+  TouchableOpacity,
   View,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -19,6 +21,8 @@ const ICON_BG = Colors.light.primary;
 
 export default function HomeScreen() {
   const { user } = useAuth();
+  const router = useRouter();
+
   const employeeId = (user as any)?.employee?.id;
 
   const { data, isLoading } = useFetch({
@@ -41,6 +45,20 @@ export default function HomeScreen() {
           <View style={styles.headerTexts}>
             <Text style={styles.greeting}>مرحباً،</Text>
             <Text style={styles.name}>{user?.name || "ضيف"}</Text>
+          </View>
+        </View>
+        <View style={styles.headerRight}>
+          <TouchableOpacity
+            style={styles.notifBtn}
+            onPress={() => router.push('/notifications')}
+            activeOpacity={0.8}
+          >
+            <Ionicons name="notifications-outline" size={22} color={PRIMARY} />
+          </TouchableOpacity>
+          <View style={styles.avatarCircle}>
+            <Text style={styles.avatarInitial}>
+              {(user?.name || 'ض').charAt(0)}
+            </Text>
           </View>
         </View>
 
@@ -192,7 +210,7 @@ const styles = StyleSheet.create({
     shadowRadius: 10,
     elevation: 4,
     marginBottom: 16,
-    
+
   },
   cardAccent: {
     height: 4,
@@ -334,5 +352,20 @@ const styles = StyleSheet.create({
     fontWeight: "500",
     color: PRIMARY,
     textAlign: "right",
+  },
+  headerRight: {
+    flexDirection: "row-reverse",
+    alignItems: "center",
+    gap: 10,
+  },
+  notifBtn: {
+    width: 42,
+    height: 42,
+    borderRadius: 12,
+    backgroundColor: ICON_BG,
+    alignItems: "center",
+    justifyContent: "center",
+    borderWidth: 0.5,
+    borderColor: "rgba(80,13,117,0.15)",
   },
 });
