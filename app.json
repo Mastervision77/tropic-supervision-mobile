@@ -3,7 +3,7 @@
     "name": "TROPIC SUPERVISOR",
     "slug": "tropic-supervisor",
       "scheme": "tropicsupervisor",
-    "version": "1.0.0",
+    "version": "1.0.1",
     "orientation": "portrait",
     "icon": "./assets/images/logoandroid.png",
     "splash": {
@@ -14,7 +14,7 @@
     "android": {
       "package": "com.supervisor.app",
        "googleServicesFile": "./google-services.json",
-      "versionCode": 9,
+      "versionCode": 10,
       "permissions": [
        "android.permission.INTERNET",
         "android.permission.ACCESS_FINE_LOCATION",
@@ -36,7 +36,7 @@
     "ios": {
       "supportsTablet": true,
       "bundleIdentifier": "com.supervisor.app",
-      "buildNumber": "2",
+      "buildNumber": "3",
       "infoPlist": {
         "ITSAppUsesNonExemptEncryption": false,
         "NSLocationWhenInUseUsageDescription": "This app needs access to location to show tasks on the map."

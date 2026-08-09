@@ -227,7 +227,7 @@ export default function LoginScreen() {
               />
             </View>
 
-            <Text style={styles.title}>تسجيل الدخول في تروبك للاشراف</Text>
+            <Text style={styles.title}>تسجيل الدخول في تروبيك للاشراف</Text>
 
             <View style={styles.inputContainer}>
               <Text style={styles.inputLabel}>البريد الإلكتروني</Text>
